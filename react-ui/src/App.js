@@ -1,55 +1,89 @@
 import React, { Component } from 'react'
-import { Container, Card, Grid } from 'semantic-ui-react'
+import { Container } from 'semantic-ui-react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import taskservice from './services/tasks'
+import TaskBoard from './components/TaskBoard'
+import NavBar from './components/NavBar'
+import TaskForm from './components/TaskForm'
 
-const tasks = [
-  {
-    name: 'Init app',
-    description: 'Create app.',
-    status: 'finished'
-  },
-  {
-    name: 'Init eslint',
-    description: 'Install eslint and define rules.',
-    status: 'finished'
-  },
-  {
-    name: 'Implement task component',
-    description: 'Create react-component for single Task.',
-    status: 'started'
-  }
+const statuses = [
+  'not started',
+  'started',
+  'finished'
 ]
 
-const finishedTasks = tasks.filter(task => task.status === 'finished')
-const startedTasks = tasks.filter(task => task.status === 'started')
-
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      tasks: [],
+      name: '',
+      description: '',
+      status: ''
+    }
+  }
+
+  componentDidMount = async () => {
+    const tasks = await taskservice.getAll()
+    this.setState({ tasks })
+  }
+
+  toggleStatus = (updatedTask, status) => () => {
+    const filteredTasks = this.state.tasks.filter(task => task.name !== updatedTask.name)
+    filteredTasks.push({ ...updatedTask, status })
+    this.setState({ tasks: filteredTasks, name: '', description: '', status: '' })
+  }
+
+  filteredTasks = (filter) =>
+    this.state.tasks.filter(task => task.status === filter)
+
+  handleChange = (event, data) => {
+    if (data) this.setState({ [data.name]: data.value })
+    else this.setState({ [event.target.name]: event.target.value })
+  }
+
+  createTask = (history) => async (event) => {
+    event.preventDefault()
+
+    const task = { name: this.state.name, description: this.state.description, status: this.state.status }
+    const createdTask = await taskservice.createNew(task)
+    this.setState({ tasks: [...this.state.tasks, createdTask] })
+    history.push('/')
+  }
+
   render() {
     return (
-      <Container style={{ marginTop: 20 }}>
-        <Grid columns={2}>
-          <Grid.Column>
-            <h1>Started</h1>
-            {startedTasks.map(task =>
-              <Task key={task.name} task={task} />
-            )}
-          </Grid.Column>
-          <Grid.Column>
-            <h1>Finished</h1>
-            {finishedTasks.map(task =>
-              <Task key={task.name} task={task} />
-            )}
-          </Grid.Column>
-        </Grid>
-      </Container>
+      <div>
+        <Router>
+          <div>
+            <NavBar />
+            <Container style={{ marginTop: 60 }}>
+              <Route
+                exact path='/'
+                render={() =>
+                  <TaskBoard
+                    statuses={statuses}
+                    handleClick={this.toggleStatus}
+                    filteredTasks={this.filteredTasks}
+                  />}
+              />
+              <Route
+                exact path='/create'
+                render={({ history }) =>
+                  <TaskForm
+                    statuses={statuses}
+                    handleChange={this.handleChange}
+                    state={this.state}
+                    handleSubmit={this.createTask}
+                    history={history}
+                  />}
+              />
+            </Container>
+          </div>
+        </Router>
+      </div>
     )
   }
 }
-
-const Task = ({ task }) => (
-  <Card>
-    <Card.Content header={task.name} />
-    <Card.Content description={task.description} />
-  </Card>
-)
 
 export default App
