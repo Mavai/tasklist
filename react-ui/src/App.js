@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Container } from 'semantic-ui-react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import TaskBoard from './components/TaskBoard'
 import NavBar from './components/NavBar'
 import TaskForm from './components/TaskForm'
-import { connect } from 'react-redux'
+import TaskBoard from './components/TaskBoard'
 import { initTasks } from './reducers/taskReducer'
 import { initStatuses } from './reducers/statusReducer'
 
@@ -38,11 +38,7 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  tasks: state.tasks
-})
-
 export default connect(
-  mapStateToProps,
+  null,
   { initTasks, initStatuses }
 )(App)

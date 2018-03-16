@@ -1,61 +1,52 @@
 import React from 'react'
 import { Form } from 'semantic-ui-react'
-import { createTask } from '../reducers/taskReducer'
 import { connect } from 'react-redux'
+import { createTask } from '../reducers/taskReducer'
+import { updateForm } from '../reducers/taskFormReducer'
 
-class TaskForm extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      name: '',
-      description: '',
-      status: ''
-    }
-  }
-  createTask = (history) => async (event) => {
+const TaskForm = (props) => {
+  const { statuses, form, updateForm } = props
+
+  const createTask = async (event) => {
     event.preventDefault()
-    const task = { name: this.state.name, description: this.state.description, status: this.state.status }
+    const task = { ...form }
     this.props.createTask(task)
-    this.setState({ name: '', description: '', status: '' })
-    history.push('/')
+    this.props.history.push('/')
   }
 
-  handleChange = (event, data) => {
-    if (data) this.setState({ [data.name]: data.value })
-    else this.setState({ [event.target.name]: event.target.value })
-  }
-
-  render = () => {
-    const { history, statuses } = this.props
-    const options = statuses.map(status => ({ key: status, text: status, value: status }))
-    return (
-      <Form onSubmit={this.createTask(history)}>
-        <Form.Field>
-          <label>Name</label>
-          <input onChange={this.handleChange} value={this.state.name} name='name'/>
-        </Form.Field>
-        <Form.Field>
-          <label>Description</label>
-          <input onChange={this.handleChange} value={this.state.description} name='description'/>
-        </Form.Field>
-        <Form.Select
-          label='Status'
-          options = {options}
-          onChange={this.handleChange}
-          name='status'
-          placeholder='Status'
-        />
-        <Form.Button>Submit</Form.Button>
-      </Form>
-    )
-  }
+  const options = statuses.map(status => ({ key: status, text: status, value: status }))
+  return (
+    <Form onSubmit={createTask}>
+      <Form.Input
+        label='Name'
+        onChange={updateForm}
+        value={form.name}
+        name='name'
+      />
+      <Form.Input
+        label='Description'
+        onChange={updateForm}
+        value={form.description}
+        name='description'
+      />
+      <Form.Select
+        label='Status'
+        options = {options}
+        onChange={updateForm}
+        name='status'
+        placeholder='Status'
+      />
+      <Form.Button>Submit</Form.Button>
+    </Form>
+  )
 }
 
 const mapStateToProps = (state) => ({
-  statuses: state.statuses
+  statuses: state.statuses,
+  form: state.taskForm
 })
 
 export default connect(
   mapStateToProps,
-  { createTask }
+  { createTask, updateForm }
 )(TaskForm)
