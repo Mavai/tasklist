@@ -22,7 +22,7 @@ const TaskBoard = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  tasks: state.tasks,
+  tasks: state.tasks.sort((a, b) => a.name.localeCompare(b.name)),
   statuses: state.statuses
 })
 

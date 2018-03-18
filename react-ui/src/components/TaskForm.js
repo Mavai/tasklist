@@ -5,13 +5,13 @@ import { createTask } from '../reducers/taskReducer'
 import { updateForm } from '../reducers/taskFormReducer'
 
 const TaskForm = (props) => {
-  const { statuses, form, updateForm } = props
+  const { statuses, formData, updateForm } = props
 
   const createTask = async (event) => {
     event.preventDefault()
-    const task = { ...form }
-    this.props.createTask(task)
-    this.props.history.push('/')
+    const task = formData
+    props.createTask(task)
+    props.history.push('/')
   }
 
   const options = statuses.map(status => ({ key: status, text: status, value: status }))
@@ -20,13 +20,13 @@ const TaskForm = (props) => {
       <Form.Input
         label='Name'
         onChange={updateForm}
-        value={form.name}
+        value={formData.name}
         name='name'
       />
       <Form.Input
         label='Description'
         onChange={updateForm}
-        value={form.description}
+        value={formData.description}
         name='description'
       />
       <Form.Select
@@ -43,7 +43,7 @@ const TaskForm = (props) => {
 
 const mapStateToProps = (state) => ({
   statuses: state.statuses,
-  form: state.taskForm
+  formData: state.taskForm
 })
 
 export default connect(
