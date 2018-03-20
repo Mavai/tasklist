@@ -16,4 +16,9 @@ const update = async (task) => {
   return response.data
 }
 
-export default { getAll, createNew, update }
+const remove = async (task) => {
+  const response = await axios.delete(`${baseUrl}/${task.id}`)
+  return response.data
+}
+
+export default { getAll, createNew, update, remove }

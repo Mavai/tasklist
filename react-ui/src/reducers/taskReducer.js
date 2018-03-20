@@ -12,6 +12,8 @@ const taskReducer = (state = initialState, action) => {
       const filteredTasks = state.filter(task => task.id !== action.task.id)
       return [...filteredTasks, action.task]
     }
+    case 'DELETE_TASK':
+      return state.filter(task => task.id !== action.task.id)
     default:
       return state
   }
@@ -39,10 +41,15 @@ export const createTask = (newTask) => {
 
 export const changeStatus = (task, status) => {
   return async (dispatch) => {
-    const updatedTask = await taskService.update({ ...task, status })
+    const updatedTask = await taskService.update({
+      id: task.id,
+      name: task.name,
+      description: task.description,
+      status
+    })
     dispatch({
       type: 'UPDATE_TASK',
-      task: updatedTask
+      task: { ...updatedTask, info: true }
     })
   }
 }
@@ -53,6 +60,16 @@ export const toggleInfo = (task) => {
     type: 'UPDATE_TASK',
     task: updatedTask
   })
+}
+
+export const removeTask = (task) => {
+  return async (dispatch) => {
+    await taskService.remove(task)
+    dispatch({
+      type: 'DELETE_TASK',
+      task
+    })
+  }
 }
 
 export default taskReducer

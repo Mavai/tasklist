@@ -1,30 +1,35 @@
 import React from 'react'
 import StatusMenu from '../components/StatusMenu'
-import { Card, Transition } from 'semantic-ui-react'
+import { Card, Transition, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { toggleInfo } from '../reducers/taskReducer'
+import { toggleInfo, removeTask } from '../reducers/taskReducer'
 
 const Task = (props) => {
 
-  const { task, toggleInfo } = props
+  const { task, toggleInfo, removeTask } = props
 
   return (
-    <Transition animation='scale' duration={500} transitionOnMount={true}>
       <Card fluid>
-        <Card.Content onClick={() => toggleInfo(task)}>
-          <Card.Header>{task.name} </Card.Header>
-          <div style={{ display: task.info ? '' : 'none' }}>
-            <Card.Meta style={{ color: 'green' }}>{task.status} </Card.Meta>
-            <Card.Description>{task.description} </Card.Description>
-            <StatusMenu task={task} />
-          </div>
+        <Card.Content>
+          <Card.Header onClick={() => toggleInfo(task)}>{task.name}
+          </Card.Header>
+          <Transition visible={task.info ? true : false} animation='slide down' duration={{ hide: 200, show: 500 }}>
+            <div>
+              <Card.Meta style={{ color: 'green' }}>{task.status} </Card.Meta>
+              <Card.Description>{task.description} </Card.Description>
+              <StatusMenu task={task} />
+              <div style={{ marginTop: 5 }}>
+                <Icon link onClick={() => removeTask(task)} color='red' inverted circular name='delete'></Icon>
+                <Icon link onClick={() => console.log('sth')} color='blue' inverted circular name='edit'></Icon>
+              </div>
+            </div>
+          </Transition>
         </Card.Content>
       </Card>
-    </Transition>
   )
 }
 
 export default connect(
   null,
-  { toggleInfo }
+  { toggleInfo, removeTask }
 )(Task)

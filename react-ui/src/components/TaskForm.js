@@ -9,8 +9,7 @@ const TaskForm = (props) => {
 
   const createTask = async (event) => {
     event.preventDefault()
-    const task = formData
-    props.createTask(task)
+    props.createTask(formData)
     props.history.push('/')
   }
 
