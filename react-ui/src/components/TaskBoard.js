@@ -26,7 +26,7 @@ const TaskBoard = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  tasks: state.tasks.sort((a, b) => b.id - a.id),
+  tasks: state.tasks.sort((a, b) => b.priority - a.priority || b.id - a.id),
   statuses: state.statuses
 })
 

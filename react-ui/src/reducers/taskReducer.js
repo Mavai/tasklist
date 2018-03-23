@@ -39,19 +39,25 @@ export const createTask = (newTask) => {
   }
 }
 
+const updateTask = (task, info) => async dispatch => {
+  const updatedTask = await taskService.update(task)
+  dispatch({
+    type: 'UPDATE_TASK',
+    task: { ...updatedTask, info }
+  })
+}
+
 export const changeStatus = (task, status) => {
-  return async (dispatch) => {
-    const updatedTask = await taskService.update({
-      id: task.id,
-      name: task.name,
-      description: task.description,
-      status
-    })
-    dispatch({
-      type: 'UPDATE_TASK',
-      task: { ...updatedTask, info: true }
-    })
+  const { info, ...taskToSave } = { ...task, status }
+  return updateTask(taskToSave, info)
+}
+
+export const changePriority = (task, direction) => {
+  const { info, ...taskToSave } = {
+    ...task,
+    priority: direction === 'increase' ? task.priority + 1 : task.priority - 1
   }
+  return updateTask(taskToSave, info)
 }
 
 export const toggleInfo = (task) => {
@@ -71,5 +77,6 @@ export const removeTask = (task) => {
     })
   }
 }
+
 
 export default taskReducer
