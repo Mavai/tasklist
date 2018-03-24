@@ -30,8 +30,11 @@ export const initTasks = () => {
 }
 
 export const createTask = (newTask) => {
-  return async (dispatch) => {
-    const task = await taskService.createNew(newTask)
+  return async (dispatch, getState) => {
+    const task = await taskService.createNew({
+      ...newTask,
+      project: getState().projects.selected.id
+    })
     dispatch({
       type: 'CREATE_TASK',
       task

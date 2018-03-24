@@ -12,7 +12,7 @@ const TaskBoard = (props) => {
       {props.statuses.map(status => (
         <Grid.Column key={status}>
           <h1>{status}</h1>
-          <Transition.Group as={List} duration={500} animation='fade'>
+          <Transition.Group as={List} duration={{ show: 500, hide: 0 }} animation='fade'>
             {filteredTasks(status).map(task =>
               <List.Item key={task.id}>
                 <Task task={task} />
