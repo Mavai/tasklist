@@ -7,12 +7,14 @@ import TaskForm from './components/TaskForm'
 import TaskBoard from './components/TaskBoard'
 import { initTasks } from './reducers/taskReducer'
 import { initStatuses } from './reducers/statusReducer'
+import { initProjects } from './reducers/projectReducer'
 
 class App extends Component {
 
   componentDidMount = async () => {
     this.props.initTasks()
     this.props.initStatuses()
+    this.props.initProjects()
   }
 
   render() {
@@ -40,5 +42,5 @@ class App extends Component {
 
 export default connect(
   null,
-  { initTasks, initStatuses }
+  { initTasks, initStatuses, initProjects }
 )(App)

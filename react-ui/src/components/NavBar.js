@@ -1,8 +1,10 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { Menu, Container } from 'semantic-ui-react'
+import { Menu, Container, Dropdown } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import { selectProject } from '../reducers/projectReducer'
 
-const NavBar = () => (
+const NavBar = (props) => (
   <Menu fixed='top' size='huge'>
     <Container>
       <Menu.Item
@@ -18,8 +20,23 @@ const NavBar = () => (
         exact to='/create'
         activeClassName='active'
       />
+      <Dropdown item text={props.project ? props.project.name : 'Project'}>
+        <Dropdown.Menu>
+          {props.projects.map(project =>
+            <Dropdown.Item key={project.name} onClick={() => props.selectProject(project)}>{project.name}</Dropdown.Item>
+          )}
+        </Dropdown.Menu>
+      </Dropdown>
     </Container>
   </Menu>
 )
 
-export default NavBar
+const mapStateToProps = (state) => ({
+  projects: state.projects.all,
+  project: state.projects.selected
+})
+
+export default connect(
+  mapStateToProps,
+  { selectProject }
+)(NavBar)
