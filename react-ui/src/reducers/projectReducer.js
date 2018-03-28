@@ -27,7 +27,6 @@ export const initProjects = () => {
 }
 
 export const selectProject = (project) => {
-  console.log('pressed')
   return ({
     type: 'CHANGE_SELECTED',
     project

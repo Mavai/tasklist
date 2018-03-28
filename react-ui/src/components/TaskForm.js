@@ -5,7 +5,13 @@ import { createTask } from '../reducers/taskReducer'
 import { updateForm } from '../reducers/taskFormReducer'
 
 const TaskForm = (props) => {
-  const { statuses, formData, updateForm } = props
+  const { statuses, formData, updateForm, selectedProject } = props
+
+  if (!selectedProject) return (
+    <div style={{ width: 200, height: 100, position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, margin: 'auto' }}>
+      <h1>Select project</h1>
+    </div>
+  )
 
   const createTask = async (event) => {
     event.preventDefault()
@@ -35,6 +41,10 @@ const TaskForm = (props) => {
         name='status'
         placeholder='Status'
       />
+      <Form.Field>
+        <label>Project</label>
+        <input readOnly value={selectedProject.name}></input>
+      </Form.Field>
       <Form.Button>Submit</Form.Button>
     </Form>
   )
@@ -42,7 +52,8 @@ const TaskForm = (props) => {
 
 const mapStateToProps = (state) => ({
   statuses: state.statuses,
-  formData: state.taskForm
+  formData: state.taskForm,
+  selectedProject: state.projects.selected
 })
 
 export default connect(

@@ -4,8 +4,11 @@ import { Grid, Transition, List } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 
 const TaskBoard = (props) => {
-  const filteredTasks = (filter) =>
-    props.tasks.filter(task => task.status === filter)
+  if (!props.selectedProject) return (
+    <div style={{ width: 200, height: 100, position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, margin: 'auto' }}>
+      <h1>Select project</h1>
+    </div>
+  )
 
   return (
     <Grid columns={3} stackable>
@@ -13,7 +16,7 @@ const TaskBoard = (props) => {
         <Grid.Column key={status}>
           <h1>{status}</h1>
           <Transition.Group as={List} duration={{ show: 500, hide: 0 }} animation='fade'>
-            {filteredTasks(status).map(task =>
+            {props[status].map(task =>
               <List.Item key={task.id}>
                 <Task task={task} />
               </List.Item>
@@ -25,12 +28,24 @@ const TaskBoard = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({
-  tasks: state.projects.selected ?
-    state.tasks.filter(task => task.project === state.projects.selected.id).sort((a, b) => b.priority - a.priority || b.id - a.id) :
-    [],
-  statuses: state.statuses
-})
+const filteredByStatus = (tasks, status) =>
+  tasks.filter(task => task.status === status)
+
+const filteredByCurrentProject = (tasks, project) =>
+  project ?
+    tasks.filter(task => task.project === project.id) :
+    []
+
+const mapStateToProps = (state) => {
+  const tasksByStatus = {}
+  const tasks = filteredByCurrentProject(state.tasks, state.projects.selected)
+  state.statuses.forEach(status => tasksByStatus[status] = filteredByStatus(tasks, status).sort((a, b) => b.priority - a.priority || b.id - a.id))
+  return {
+    ...tasksByStatus,
+    statuses: state.statuses,
+    selectedProject: state.projects.selected
+  }
+}
 
 export default connect(
   mapStateToProps,

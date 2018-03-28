@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom'
 import { Menu, Container, Dropdown } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { selectProject } from '../reducers/projectReducer'
@@ -8,11 +8,16 @@ const NavBar = (props) => (
   <Menu fixed='top' size='huge'>
     <Container>
       <Menu.Item
-        name='Taskboard'
+        name='Info'
         as={ NavLink }
         exact to='/'
         activeClassName='active'
-
+      />
+      <Menu.Item
+        name='Taskboard'
+        as={ NavLink }
+        exact to='/taskboard'
+        activeClassName='active'
       />
       <Menu.Item
         name='New task'
@@ -31,12 +36,14 @@ const NavBar = (props) => (
   </Menu>
 )
 
-const mapStateToProps = (state) => ({
-  projects: state.projects.all,
-  project: state.projects.selected
-})
+const mapStateToProps = (state) => {
+  return {
+    projects: state.projects.all,
+    project: state.projects.selected
+  }
+}
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   { selectProject }
-)(NavBar)
+)(NavBar))
