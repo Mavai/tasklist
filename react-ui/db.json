@@ -1,0 +1,29 @@
+{
+  "tasks": [
+    {
+      "name": "Task 1",
+      "description": "Lorem ipsum description.",
+      "status": "",
+      "project": 1,
+      "id": 1
+    },
+    {
+      "name": "Task 1",
+      "description": "Lorem ipsum description.",
+      "status": "Not started",
+      "project": 1,
+      "id": 2
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "name": "Full Stack Project"
+    }
+  ],
+  "statuses": [
+    "Not started",
+    "Started",
+    "Finished "
+  ]
+}

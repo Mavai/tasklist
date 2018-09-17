@@ -12,23 +12,17 @@ const ProjectInfo = (props) => {
     name: status,
     value: props[status].length
   }))
-  const colors = ['#ff0000', '#99ff99', '#006600']
-  const floated = {
-    float: 'left',
-    height: 250,
-    width: 400,
-    margin: 10,
-    verticalAlign: 'middle'
-  }
+  const colors = ['red', 'cyan', 'lightGreen']
   return (
     <div>
-      <div style={floated}>
+      <div style={{ display: 'inline-block' }}>
+        <h2>Name: {props.selectedProject.name}</h2>
         <h3>Total tasks: {props.tasks.length}</h3>
         {props.statuses.map(status => (
           <h3 key={status}>{status}: {props[status].length}</h3>
         ))}
       </div>
-      <PieChart width={250} height={250} style={floated}>
+      <PieChart width={250} height={250} style={{ float: 'right' }}>
         <Legend />
         <Tooltip />
         <Pie data={data} dataKey="value" nameKey="name" outerRadius={100}>

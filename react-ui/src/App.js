@@ -26,7 +26,7 @@ class App extends Component {
           <Container style={{ marginTop: 60 }}>
             <Route
               exact path='/'
-              render={() => <ProjectInfo />}
+              render={() => (<ProjectInfo />)}
             />
             <Route
               exact path='/taskboard'
