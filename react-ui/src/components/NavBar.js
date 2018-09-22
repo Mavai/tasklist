@@ -1,8 +1,8 @@
-import React from 'react'
-import { NavLink, withRouter } from 'react-router-dom'
-import { Menu, Container, Dropdown } from 'semantic-ui-react'
-import { connect } from 'react-redux'
-import { selectProject } from '../reducers/projectReducer'
+import React from 'react';
+import { NavLink, withRouter } from 'react-router-dom';
+import { Menu, Container, Dropdown } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { selectProject } from '../reducers/projectReducer';
 
 const NavBar = (props) => (
   <Menu fixed='top' size='huge'>
@@ -34,16 +34,16 @@ const NavBar = (props) => (
       </Dropdown>
     </Container>
   </Menu>
-)
+);
 
 const mapStateToProps = (state) => {
   return {
     projects: state.projects.all,
     project: state.projects.selected
-  }
-}
+  };
+};
 
 export default withRouter(connect(
   mapStateToProps,
   { selectProject }
-)(NavBar))
+)(NavBar));

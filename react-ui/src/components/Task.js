@@ -1,19 +1,19 @@
-import React from 'react'
-import StatusMenu from '../components/StatusMenu'
-import { Card, Transition, Icon } from 'semantic-ui-react'
-import { connect } from 'react-redux'
-import { toggleInfo, removeTask, changePriority } from '../reducers/taskReducer'
+import React from 'react';
+import StatusMenu from '../components/StatusMenu';
+import { Card, Transition, Icon } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { toggleInfo, removeTask, changePriority } from '../reducers/taskReducer';
 
 const Task = (props) => {
 
-  const { task, toggleInfo, removeTask, changePriority } = props
+  const { task, toggleInfo, removeTask, changePriority } = props;
 
   return (
     <Card fluid>
       <Card.Content>
         <Card.Header onClick={() => toggleInfo(task)}>{task.name}
         </Card.Header>
-        <Transition visible={task.info ? true : false} animation='slide down' duration={{ hide: 200, show: 500 }}>
+        <Transition visible={task.info ? true : false} animation='slide down' duration={{ hide: 0, show: 200 }}>
           <div>
             <Card.Meta style={{ color: 'green' }}>{task.status} </Card.Meta>
             <Card.Description>{task.description} </Card.Description>
@@ -42,10 +42,10 @@ const Task = (props) => {
         </Transition>
       </Card.Content>
     </Card>
-  )
-}
+  );
+};
 
 export default connect(
   null,
   { toggleInfo, removeTask, changePriority }
-)(Task)
+)(Task);

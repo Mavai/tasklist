@@ -1,21 +1,21 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Container } from 'semantic-ui-react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
-import NavBar from './components/NavBar'
-import TaskForm from './components/TaskForm'
-import TaskBoard from './components/TaskBoard'
-import ProjectInfo from './components/ProjectInfo'
-import { initTasks } from './reducers/taskReducer'
-import { initStatuses } from './reducers/statusReducer'
-import { initProjects } from './reducers/projectReducer'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Container } from 'semantic-ui-react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import NavBar from './components/NavBar';
+import TaskForm from './components/TaskForm';
+import TaskBoard from './components/TaskBoard';
+import ProjectInfo from './components/ProjectInfo';
+import { initTasks } from './reducers/taskReducer';
+import { initStatuses } from './reducers/statusReducer';
+import { initProjects } from './reducers/projectReducer';
 
 class App extends Component {
 
   componentDidMount = async () => {
-    this.props.initTasks()
-    this.props.initStatuses()
-    this.props.initProjects()
+    this.props.initTasks();
+    this.props.initStatuses();
+    this.props.initProjects();
   }
 
   render() {
@@ -39,11 +39,11 @@ class App extends Component {
           </Container>
         </div>
       </Router>
-    )
+    );
   }
 }
 
 export default connect(
   null,
   { initTasks, initStatuses, initProjects }
-)(App)
+)(App);

@@ -2,17 +2,11 @@
   "tasks": [
     {
       "name": "Task 1",
-      "description": "Lorem ipsum description.",
-      "status": "",
+      "description": "Lorem ipsum...",
+      "status": 3,
       "project": 1,
-      "id": 1
-    },
-    {
-      "name": "Task 1",
-      "description": "Lorem ipsum description.",
-      "status": "Not started",
-      "project": 1,
-      "id": 2
+      "id": 1,
+      "priority": 0
     }
   ],
   "projects": [
@@ -22,8 +16,25 @@
     }
   ],
   "statuses": [
-    "Not started",
-    "Started",
-    "Finished "
+    {
+      "id": 1,
+      "name": "Not started",
+      "color": "gray"
+    },
+    {
+      "id": 2,
+      "name": "Started",
+      "color": "red"
+    },
+    {
+      "id": 3,
+      "name": "In review",
+      "color": "cyan"
+    },
+    {
+      "id": 4,
+      "name": "Finished",
+      "color": "lightGreen"
+    }
   ]
 }

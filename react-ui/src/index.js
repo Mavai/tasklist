@@ -1,9 +1,8 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
-import store from './store'
-import { Provider } from 'react-redux'
-import './styles.css'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import store from './store';
+import { Provider } from 'react-redux';
 
 const render = () => {
   ReactDOM.render(
@@ -11,8 +10,8 @@ const render = () => {
       <App />
     </Provider>,
     document.getElementById('root')
-  )
-}
+  );
+};
 
-render()
-store.subscribe(render)
+render();
+store.subscribe(render);

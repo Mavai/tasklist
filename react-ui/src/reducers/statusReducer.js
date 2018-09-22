@@ -1,24 +1,24 @@
-import statusService from '../services/statuses'
+import statusService from '../services/statuses';
 
-const initialState = []
+const initialState = [];
 
 const statusReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'INIT_STATUSES':
-      return action.statuses
+      return action.statuses;
     default:
-      return state
+      return state;
   }
-}
+};
 
 export const initStatuses = () => {
   return async (dispatch) => {
-    const statuses = await statusService.getAll()
+    const statuses = await statusService.getAll();
     dispatch({
       type: 'INIT_STATUSES',
       statuses
-    })
-  }
-}
+    });
+  };
+};
 
-export default statusReducer
+export default statusReducer;

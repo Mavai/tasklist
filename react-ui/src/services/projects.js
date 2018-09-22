@@ -1,9 +1,9 @@
-import axios from 'axios'
-const baseUrl = 'http://localhost:3001/projects'
+import axios from 'axios';
+const baseUrl = 'api/projects';
 
 const getAll = async () => {
-  const response = await axios.get(baseUrl)
-  return response.data
-}
+  const response = await axios.get(baseUrl);
+  return response.data;
+};
 
-export default { getAll }
+export default { getAll };
