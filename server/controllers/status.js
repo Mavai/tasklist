@@ -1,5 +1,5 @@
 const statusRouter = require('express').Router();
-const Status = require('../models/status');
+const Status = require('../models/Status');
 
 statusRouter.get('/', async (request, response) => {
   const statuses = await Status
