@@ -1,7 +1,8 @@
 import React from 'react';
 import Task from '../components/Task';
-import { Grid, List } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const TaskBoard = (props) => {
   const { selectedProject, statuses, tasksByStatus } = props;
@@ -12,18 +13,35 @@ const TaskBoard = (props) => {
   );
 
   return (
-    <Grid columns={statuses.length} stackable>
-      {tasksByStatus.map(obj => (
-        <Grid.Column key={obj.status.name}>
-          <h1>{obj.status.name}</h1>
-          {obj.tasks.map(task =>
-            <List.Item key={task.id}>
-              <Task task={task} />
-            </List.Item>
-          )}
-        </Grid.Column>
-      ))}
-    </Grid>
+    <DragDropContext onDragEnd={result => console.log(result)}>
+      <Grid columns={statuses.length} stackable>
+        {tasksByStatus.map(obj => (
+          <Grid.Column key={obj.status.name}>
+            <Droppable droppableId={obj.status.name}>
+              {(provided) => (
+                <div ref={provided.innerRef}>
+                  <h1>{obj.status.name}</h1>
+                  {obj.tasks.map((task, index) =>
+                    <Draggable key={task.id} draggableId={task.id} index={index}>
+                      {(provided) => (
+                        <div
+                          key={task.id}
+                          ref={provided.innerRef}
+                          { ...provided.draggableProps }
+                          { ...provided.dragHandleProps }
+                        >
+                          <Task task={task} />
+                        </div>
+                      )}
+                    </Draggable>
+                  )}
+                </div>
+              )}
+            </Droppable>
+          </Grid.Column>
+        ))}
+      </Grid>
+    </DragDropContext>
   );
 };
 

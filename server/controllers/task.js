@@ -3,7 +3,9 @@ const Task = require('../models/Task');
 
 taskRouter.get('/', async (request, response) => {
   const tasks = await Task
-    .find({});
+    .find({})
+    .populate('status')
+    .populate('project');
 
   response.json(tasks.map(Task.format));
 });
