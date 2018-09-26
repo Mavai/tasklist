@@ -19,9 +19,9 @@ const taskReducer = (state = initialState, action) => {
   }
 };
 
-export const initTasks = () => {
+export const initTasks = (id) => {
   return async (dispatch) => {
-    const tasks = await taskService.getAll();
+    const tasks = await taskService.getAllFromProject(id);
     dispatch({
       type: 'INIT_TASKS',
       tasks

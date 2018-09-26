@@ -1,8 +1,8 @@
 import React from 'react';
-import Task from '../components/Task';
 import { Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext } from 'react-beautiful-dnd';
+import StatusColumn from './StatusColumn';
 
 const TaskBoard = (props) => {
   const { selectedProject, statuses, tasksByStatus } = props;
@@ -16,29 +16,7 @@ const TaskBoard = (props) => {
     <DragDropContext onDragEnd={result => console.log(result)}>
       <Grid columns={statuses.length} stackable>
         {tasksByStatus.map(obj => (
-          <Grid.Column key={obj.status.name}>
-            <Droppable droppableId={obj.status.name}>
-              {(provided) => (
-                <div ref={provided.innerRef}>
-                  <h1>{obj.status.name}</h1>
-                  {obj.tasks.map((task, index) =>
-                    <Draggable key={task.id} draggableId={task.id} index={index}>
-                      {(provided) => (
-                        <div
-                          key={task.id}
-                          ref={provided.innerRef}
-                          { ...provided.draggableProps }
-                          { ...provided.dragHandleProps }
-                        >
-                          <Task task={task} />
-                        </div>
-                      )}
-                    </Draggable>
-                  )}
-                </div>
-              )}
-            </Droppable>
-          </Grid.Column>
+          <StatusColumn key={obj.status.name} statusWrapper={obj} />
         ))}
       </Grid>
     </DragDropContext>
@@ -46,11 +24,11 @@ const TaskBoard = (props) => {
 };
 
 const filteredByStatus = (tasks, status) =>
-  tasks.filter(task => task.status === status.id);
+  tasks.filter(task => task.status.id === status.id);
 
 const filteredByCurrentProject = (tasks, project) =>
   project ?
-    tasks.filter(task => task.project === project.id) :
+    tasks.filter(task => task.project.id === project.id) :
     [];
 
 const mapStateToProps = (state) => {

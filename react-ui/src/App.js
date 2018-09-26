@@ -13,9 +13,19 @@ import { initProjects } from './reducers/projectReducer';
 class App extends Component {
 
   componentDidMount = async () => {
-    this.props.initTasks();
-    this.props.initStatuses();
+    await this.initState();
+  }
+
+  initState = async () => {
     this.props.initProjects();
+    this.props.initStatuses();
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    const { selectedProject } = nextProps;
+    if (selectedProject) {
+      this.props.initTasks(selectedProject.id);
+    }
   }
 
   render() {
@@ -43,7 +53,13 @@ class App extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    selectedProject: state.projects.selected
+  };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   { initTasks, initStatuses, initProjects }
 )(App);

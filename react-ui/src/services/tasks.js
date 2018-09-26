@@ -6,6 +6,11 @@ const getAll = async () => {
   return response.data;
 };
 
+const getAllFromProject = async (id) => {
+  const response = await axios.get(`${baseUrl}/project/${id}`);
+  return response.data;
+};
+
 const createNew = async (task) => {
   const response = await axios.post(baseUrl, task);
   return response.data;
@@ -21,4 +26,4 @@ const remove = async (task) => {
   return response.data;
 };
 
-export default { getAll, createNew, update, remove };
+export default { getAll, getAllFromProject, createNew, update, remove };

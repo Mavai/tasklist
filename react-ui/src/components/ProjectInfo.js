@@ -38,11 +38,11 @@ const ProjectInfo = (props) => {
 };
 
 const filteredByStatus = (tasks, status) =>
-  tasks.filter(task => task.status === status.id);
+  tasks.filter(task => task.status.id === status.id);
 
 const filteredByCurrentProject = (tasks, project) =>
   project ?
-    tasks.filter(task => task.project === project.id) :
+    tasks.filter(task => task.project.id === project.id) :
     [];
 
 const mapStateToProps = (state) => {

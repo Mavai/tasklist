@@ -10,6 +10,13 @@ taskRouter.get('/', async (request, response) => {
   response.json(tasks.map(Task.format));
 });
 
+taskRouter.get('/project/:id', async (request, response) => {
+  const statuses = await Task
+    .find({ project: request.params.id });
+
+  response.json(statuses.map(Task.format));
+});
+
 taskRouter.post('/', async (request, response) => {
   try {
     const body = request.body;

@@ -8,7 +8,7 @@ const Task = (props) => {
   const { task, removeTask, changePriority } = props;
 
   return (
-    <Card fluid>
+    <Card fluid style={{ marginBottom: 10 }}>
       <Card.Content>
         <Card.Header>{task.name}</Card.Header>
         <div>
