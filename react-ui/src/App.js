@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Container } from 'semantic-ui-react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
@@ -10,19 +10,19 @@ import { initTasks } from './reducers/taskReducer';
 import { initStatuses } from './reducers/statusReducer';
 import { initProjects } from './reducers/projectReducer';
 
-class App extends Component {
+class App extends PureComponent {
 
   componentDidMount = async () => {
     await this.initState();
   }
 
   initState = async () => {
-    this.props.initProjects();
     this.props.initStatuses();
+    this.props.initProjects();
   }
 
-  componentWillReceiveProps = (nextProps) => {
-    const { selectedProject } = nextProps;
+  componentDidUpdate = () => {
+    const { selectedProject } = this.props;
     if (selectedProject) {
       this.props.initTasks(selectedProject.id);
     }

@@ -42,11 +42,11 @@ export const createTask = (newTask) => {
   };
 };
 
-const updateTask = (task, info) => async dispatch => {
+export const updateTask = (task) => async dispatch => {
   const updatedTask = await taskService.update(task);
   dispatch({
     type: 'UPDATE_TASK',
-    task: { ...updatedTask, info }
+    task: updatedTask
   });
 };
 
