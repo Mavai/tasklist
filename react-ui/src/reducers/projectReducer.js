@@ -2,7 +2,7 @@ import projectService from '../services/projects';
 
 const initialState = {
   all: [],
-  selected: null
+  selected: {}
 };
 
 const projectReducer = (state = initialState, action) => {
@@ -13,6 +13,13 @@ const projectReducer = (state = initialState, action) => {
     }
     case 'CHANGE_SELECTED':
       return { ...state, selected: action.project };
+    case 'UPDATE_PROJECT': {
+      let filteredProjects = state.all.filter(project => project.id !== action.project.id);
+      return {
+        ...state,
+        all: [...filteredProjects, action.project]
+      };
+    }
     default:
       return state;
   }
@@ -35,6 +42,18 @@ export const selectProject = (project) => {
   return ({
     type: 'CHANGE_SELECTED',
     project
+  });
+};
+
+export const updateProject = (project) => async dispatch => {
+  const updatedProject = await projectService.update(project);
+  dispatch({
+    type: 'UPDATE_PROJECT',
+    project: updatedProject
+  });
+  dispatch({
+    type: 'CHANGE_SELECTED',
+    project: updatedProject
   });
 };
 

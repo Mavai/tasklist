@@ -1,4 +1,5 @@
 import taskService from '../services/tasks';
+import projectService from '../services/projects';
 
 const initialState = [];
 
@@ -42,11 +43,20 @@ export const createTask = (newTask) => {
   };
 };
 
-export const updateTask = (task) => async dispatch => {
+export const updateTask = (task, project) => async dispatch => {
   const updatedTask = await taskService.update(task);
   dispatch({
     type: 'UPDATE_TASK',
     task: updatedTask
+  });
+  const updatedProject = await projectService.update(project);
+  dispatch({
+    type: 'UPDATE_PROJECT',
+    project: updatedProject
+  });
+  dispatch({
+    type: 'CHANGE_SELECTED',
+    project: updatedProject
   });
 };
 

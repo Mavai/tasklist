@@ -2,29 +2,28 @@ import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import Task from './Task';
-import { connect } from 'react-redux';
 
-class StatusColumn extends React.Component {
+class StatusColumn extends React.PureComponent {
 
   render () {
-    const { status, taskIds, tasks } = this.props;
+    const { status, tasks } = this.props;
 
     return (
-      <Grid.Column key={status.name}>
+      <Grid.Column>
         <Droppable droppableId={status.id}>
           {(provided) => (
             <div ref={provided.innerRef} style={{ minHeight: '100%' }}>
               <h1>{status.name}</h1>
-              {taskIds.map((id, index) =>
-                <Draggable key={id} draggableId={id} index={index}>
+              {tasks.map((task, index) =>
+                <Draggable key={task.id} draggableId={task.id} index={index}>
                   {(provided) => (
                     <div
-                      key={id}
+                      key={task.id}
                       ref={provided.innerRef}
                       { ...provided.draggableProps }
                       { ...provided.dragHandleProps }
                     >
-                      <Task task={tasks[id]} />
+                      <Task task={task} />
                     </div>
                   )}
                 </Draggable>
@@ -38,17 +37,9 @@ class StatusColumn extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const tasks = state.tasks.reduce((obj, task) => ({
-    ...obj,
-    [task.id]: task
-  }), {});
-  return {
-    tasks
-  };
+StatusColumn.defaultProps = {
+  tasks: [],
+  status: {}
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(StatusColumn);
+export default StatusColumn;

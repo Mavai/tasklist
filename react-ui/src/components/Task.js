@@ -12,7 +12,6 @@ const Task = (props) => {
       <Card.Content>
         <Card.Header>{task.name}</Card.Header>
         <div>
-          <Card.Meta style={{ color: 'green' }}>{task.status.name} </Card.Meta>
           <Card.Description>{task.description} </Card.Description>
           <div style={{ marginTop: 5 }}>
             <Icon link onClick={() => removeTask(task)} color='red' inverted circular name='delete'></Icon>
@@ -38,6 +37,10 @@ const Task = (props) => {
       </Card.Content>
     </Card>
   );
+};
+
+Task.defaultProps = {
+  task: {}
 };
 
 export default connect(

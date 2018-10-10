@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { DragDropContext } from 'react-beautiful-dnd';
 import StatusColumn from './StatusColumn';
 import { updateTask } from '../reducers/taskReducer';
+import move from 'lodash-move';
 
 
 class TaskBoard extends React.PureComponent {
@@ -15,40 +16,65 @@ class TaskBoard extends React.PureComponent {
     };
   }
 
-  render() {
+  onDragEnd = async (result) => {
+    const { taskBoard, tasks, selectedProject } = this.props;
+    if (!result.destination) return;
+    const { droppableId: oldStatus, index: sourceIndex } = result.source;
+    const { droppableId: newStatus, index: destinationIndex } = result.destination;
+    const taskId = taskBoard[oldStatus][sourceIndex];
+    const task = tasks[taskId];
+    const tempBoard = this.calculateTaskBoard(oldStatus, newStatus, sourceIndex, destinationIndex, task);
+    const updatedTask = { ...task, status: newStatus, project: task.project.id };
+    const updatedProject = { ...selectedProject, taskBoard: tempBoard };
+    this.setState({ updatingBoard: true, tempBoard });
+    await this.props.updateTask(updatedTask, updatedProject);
+    this.setState({ updatingBoard: false });
+  };
 
-    const { selectedProject, statuses, taskBoard, tasks } = this.props;
+  calculateTaskBoard = (oldStatus, newStatus, sourceIndex, destinationIndex, task) => {
+    const { taskBoard } = this.props;
+    if (oldStatus !== newStatus) {
+      return {
+        ...taskBoard,
+        [oldStatus]: taskBoard[oldStatus].filter((task, index) => index !== sourceIndex),
+        [newStatus]: [
+          ...taskBoard[newStatus].slice(0, destinationIndex),
+          task.id,
+          ...taskBoard[newStatus].slice(destinationIndex)
+        ]
+      };
+    } else {
+      return {
+        ...taskBoard,
+        [oldStatus]: move(taskBoard[oldStatus], sourceIndex, destinationIndex)
+      };
+    }
+  }
+
+  getColumnTasks = (column = []) => {
+    const { tasks } = this.props;
+    if (!tasks) return [];
+    return column.map(taskId => tasks[taskId]);
+  }
+
+  render() {
+    const { selectedProject, statuses, taskBoard } = this.props;
+    const { tempBoard, updatingBoard } = this.state;
+    const board = updatingBoard ? tempBoard : taskBoard;
     if (!selectedProject) return (
+      (!selectedProject) &&
       <div style={{ width: 200, height: 100, position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, margin: 'auto' }}>
         <h1>Select project</h1>
       </div>
     );
 
-    const onDragEnd = async (result) => {
-      const { destination, source } = result;
-      if (!destination) return;
-      const newStatus = destination.droppableId;
-      const oldStatus = source.droppableId;
-      const taskId = taskBoard[oldStatus][source.index];
-      const task = tasks[taskId];
-      const tempBoard = {
-        ...taskBoard,
-        [oldStatus]: taskBoard[oldStatus].filter((task, index) => index !== source.index),
-        [newStatus]: [ ...taskBoard[newStatus].slice(0, destination.index), task.id, ...taskBoard[newStatus].slice(destination.index) ]
-      };
-      const updatedTask = { ...task, status: newStatus, project: task.project.id };
-      this.setState({ updatingBoard: true, tempBoard });
-      await this.props.updateTask(updatedTask);
-      this.setState({ updatingBoard: false });
-    };
-
     return (
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Grid columns={statuses.length} stackable>
+      <DragDropContext onDragEnd={this.onDragEnd}>
+        <Grid columns={statuses.length || 1} stackable>
           {statuses.map(status => (
             <StatusColumn
               key={status.name}
-              taskIds={this.state.updatingBoard ? this.state.tempBoard[status.id] : taskBoard[status.id]}
+              tasks={this.getColumnTasks(board[status.id])}
               status={status}/>
           ))}
         </Grid>
@@ -57,26 +83,27 @@ class TaskBoard extends React.PureComponent {
   }
 }
 
-const filteredByStatus = (tasks, status) =>
-  tasks
-    .filter(task => task.status.id === status.id)
-    .map(task => task.id);
+TaskBoard.defaultProps = {
+  statuses: [],
+  taskBoard: {}
+};
 
 const mapStateToProps = (state) => {
-  const taskBoard = state.statuses.reduce((obj, status) => ({
-    ...obj,
-    [status.id]: filteredByStatus(state.tasks, status).sort((a, b) => b.priority - a.priority || b.id - a.id)
-  }), {});
-  const tasks = state.tasks.reduce((obj, task) => ({
-    ...obj,
-    [task.id]: task
-  }), {});
+  const { tasks: taskList, statuses, projects } = state;
+  const tasks = taskList.length
+    ? taskList.reduce((obj, task) => ({
+      ...obj,
+      [task.id]: task
+    }), {})
+    : null;
+  const selectedProject = projects.selected;
+  const taskBoard = selectedProject ? selectedProject.taskBoard : {};
 
   return {
     tasks,
-    taskBoard,
-    statuses: state.statuses,
-    selectedProject: state.projects.selected
+    statuses,
+    selectedProject,
+    taskBoard
   };
 };
 
