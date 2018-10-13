@@ -2,7 +2,7 @@ import projectService from '../services/projects';
 
 const initialState = {
   all: [],
-  selected: {}
+  selected: null
 };
 
 const projectReducer = (state = initialState, action) => {

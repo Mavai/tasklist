@@ -5,6 +5,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import StatusColumn from './StatusColumn';
 import { updateTask } from '../reducers/taskReducer';
 import move from 'lodash-move';
+import Placeholder from './Placeholder';
 
 
 class TaskBoard extends React.PureComponent {
@@ -61,11 +62,9 @@ class TaskBoard extends React.PureComponent {
     const { selectedProject, statuses, taskBoard } = this.props;
     const { tempBoard, updatingBoard } = this.state;
     const board = updatingBoard ? tempBoard : taskBoard;
+
     if (!selectedProject) return (
-      (!selectedProject) &&
-      <div style={{ width: 200, height: 100, position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, margin: 'auto' }}>
-        <h1>Select project</h1>
-      </div>
+      <Placeholder />
     );
 
     return (

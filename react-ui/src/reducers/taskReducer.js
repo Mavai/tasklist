@@ -32,13 +32,28 @@ export const initTasks = (id) => {
 
 export const createTask = (newTask) => {
   return async (dispatch, getState) => {
+    const selectedProject = getState().projects.selected;
     const task = await taskService.createNew({
       ...newTask,
-      project: getState().projects.selected.id
+      project: selectedProject.id
     });
     dispatch({
       type: 'CREATE_TASK',
       task
+    });
+    const taskBoard = {
+      ...selectedProject.taskBoard,
+      [task.status.id]: [ ...selectedProject.taskBoard[task.status.id], task.id ]
+    };
+    const project = { ...selectedProject, taskBoard };
+    const updatedProject = await projectService.update(project);
+    dispatch({
+      type: 'UPDATE_PROJECT',
+      project: updatedProject
+    });
+    dispatch({
+      type: 'CHANGE_SELECTED',
+      project: updatedProject
     });
   };
 };
@@ -82,11 +97,27 @@ export const toggleInfo = (task) => {
 };
 
 export const removeTask = (task) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const selectedProject = getState().projects.selected;
     await taskService.remove(task);
     dispatch({
       type: 'DELETE_TASK',
       task
+    });
+    const taskBoard = {
+      ...selectedProject.taskBoard,
+      [task.status.id]: selectedProject.taskBoard[task.status.id]
+        .filter(taskId => taskId !== task.id)
+    };
+    const project = { ...selectedProject, taskBoard };
+    const updatedProject = await projectService.update(project);
+    dispatch({
+      type: 'UPDATE_PROJECT',
+      project: updatedProject
+    });
+    dispatch({
+      type: 'CHANGE_SELECTED',
+      project: updatedProject
     });
   };
 };
