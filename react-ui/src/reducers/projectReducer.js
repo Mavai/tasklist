@@ -51,10 +51,6 @@ export const updateProject = (project) => async dispatch => {
     type: 'UPDATE_PROJECT',
     project: updatedProject
   });
-  dispatch({
-    type: 'CHANGE_SELECTED',
-    project: updatedProject
-  });
 };
 
 export default projectReducer;

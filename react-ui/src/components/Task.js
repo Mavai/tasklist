@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from 'semantic-ui-react';
 import TaskControls from './TaskControls';
 
-const Task = (props) => {
+const Task = props => {
 
   const { task, removeTask } = props;
   return (

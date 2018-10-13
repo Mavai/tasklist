@@ -24,7 +24,7 @@ class App extends PureComponent {
   componentDidUpdate = () => {
     const { selectedProject } = this.props;
     if (selectedProject) {
-      this.props.initTasks(selectedProject.id);
+      this.props.initTasks(selectedProject);
     }
   }
 

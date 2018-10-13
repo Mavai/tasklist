@@ -1,5 +1,7 @@
 import taskService from '../services/tasks';
 import projectService from '../services/projects';
+import { updateProject } from './projectReducer';
+import move from 'lodash-move';
 
 const initialState = [];
 
@@ -20,6 +22,10 @@ const taskReducer = (state = initialState, action) => {
   }
 };
 
+/**
+ * Fetch all tasks from the given project.
+ * @param {number} id Id of project whose tasks will be fetched
+ */
 export const initTasks = (id) => {
   return async (dispatch) => {
     const tasks = await taskService.getAllFromProject(id);
@@ -30,9 +36,15 @@ export const initTasks = (id) => {
   };
 };
 
+/**
+ * Create a new task and update current project's taskboard.
+ * @param {object} newTask Task to create
+ */
 export const createTask = (newTask) => {
   return async (dispatch, getState) => {
-    const selectedProject = getState().projects.selected;
+    const { all: projects, selected } = getState().projects;
+    const selectedProject = projects
+      .find(project => project.id === selected);
     const task = await taskService.createNew({
       ...newTask,
       project: selectedProject.id
@@ -47,58 +59,58 @@ export const createTask = (newTask) => {
     };
     const project = { ...selectedProject, taskBoard };
     const updatedProject = await projectService.update(project);
-    dispatch({
-      type: 'UPDATE_PROJECT',
-      project: updatedProject
-    });
-    dispatch({
-      type: 'CHANGE_SELECTED',
-      project: updatedProject
-    });
+    dispatch(updateProject(updatedProject));
   };
 };
 
-export const updateTask = (task, project) => async dispatch => {
+/**
+ * Update the given task.
+ * @param {object} task Task to update
+ */
+export const updateTask = (task) => async dispatch => {
   const updatedTask = await taskService.update(task);
   dispatch({
     type: 'UPDATE_TASK',
     task: updatedTask
   });
-  const updatedProject = await projectService.update(project);
+};
+
+/**
+ * Change status of a task and update current project's taskboard.
+ * @param {object} taskBoard Current taskboard
+ * @param {string} oldStatus Id of the orevious status
+ * @param {string} newStatus Id of the new status
+ * @param {number} sourceIndex Index in the previous column
+ * @param {number} destinationIndex Index in the new column
+ * @param {object} task Task to update
+ */
+export const changeTaskStatus = (taskBoard, oldStatus, newStatus,
+  sourceIndex, destinationIndex, task) => async (dispatch, getState) => {
+  const { all: projects, selected } = getState().projects;
+  const selectedProject = projects
+    .find(project => project.id === selected);
+  const project = {
+    ...selectedProject,
+    taskBoard: calculateTaskBoard(taskBoard, oldStatus, newStatus, sourceIndex, destinationIndex, task)
+  };
   dispatch({
     type: 'UPDATE_PROJECT',
-    project: updatedProject
+    project
   });
-  dispatch({
-    type: 'CHANGE_SELECTED',
-    project: updatedProject
-  });
+  dispatch(updateTask(task));
+  const updatedProject = await projectService.update(project);
+  dispatch(updateProject(updatedProject));
 };
 
-export const changeStatus = (task, status) => {
-  const { info, ...taskToSave } = { ...task, status };
-  return updateTask(taskToSave, info);
-};
-
-export const changePriority = (task, direction) => {
-  const { info, ...taskToSave } = {
-    ...task,
-    priority: direction === 'increase' ? task.priority + 1 : task.priority - 1
-  };
-  return updateTask(taskToSave, info);
-};
-
-export const toggleInfo = (task) => {
-  const updatedTask = { ...task, info: !task.info };
-  return({
-    type: 'UPDATE_TASK',
-    task: updatedTask
-  });
-};
-
+/**
+ * Remove the given task and update currently selected project's taskboard.
+ * @param {object} task Task to remove.
+ */
 export const removeTask = (task) => {
   return async (dispatch, getState) => {
-    const selectedProject = getState().projects.selected;
+    const { all: projects, selected } = getState().projects;
+    const selectedProject = projects
+      .find(project => project.id === selected);
     await taskService.remove(task);
     dispatch({
       type: 'DELETE_TASK',
@@ -111,15 +123,36 @@ export const removeTask = (task) => {
     };
     const project = { ...selectedProject, taskBoard };
     const updatedProject = await projectService.update(project);
-    dispatch({
-      type: 'UPDATE_PROJECT',
-      project: updatedProject
-    });
-    dispatch({
-      type: 'CHANGE_SELECTED',
-      project: updatedProject
-    });
+    dispatch(updateProject(updatedProject));
   };
+};
+
+/**
+ * Calculates new taskboard when a taks's status is changed.
+ * @param {object} taskBoard Current taskboard
+ * @param {string} oldStatus Id of the orevious status
+ * @param {string} newStatus Id of the new status
+ * @param {number} sourceIndex Index in the previous column
+ * @param {number} destinationIndex Index in the new column
+ * @param {object} task Task to update
+ */
+const calculateTaskBoard = (taskBoard, oldStatus, newStatus, sourceIndex, destinationIndex, task) => {
+  if (oldStatus !== newStatus) {
+    return {
+      ...taskBoard,
+      [oldStatus]: taskBoard[oldStatus].filter((task, index) => index !== sourceIndex),
+      [newStatus]: [
+        ...taskBoard[newStatus].slice(0, destinationIndex),
+        task.id,
+        ...taskBoard[newStatus].slice(destinationIndex)
+      ]
+    };
+  } else {
+    return {
+      ...taskBoard,
+      [oldStatus]: move(taskBoard[oldStatus], sourceIndex, destinationIndex)
+    };
+  }
 };
 
 

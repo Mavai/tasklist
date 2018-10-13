@@ -12,7 +12,7 @@ class TaskForm extends React.PureComponent {
     this.createTask = this.createTask.bind(this);
   }
 
-  async createTask(event) {
+  createTask = async event => {
     const { createTask, history, formData } = this.props;
     event.preventDefault();
     createTask(formData);
@@ -58,10 +58,11 @@ class TaskForm extends React.PureComponent {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   statuses: state.statuses,
   formData: state.taskForm,
-  selectedProject: state.projects.selected
+  selectedProject: state.projects.all
+    .find(project => project.id === state.projects.selected)
 });
 
 export default connect(

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
 
-const TaskControls = (props) => {
+const TaskControls = props => {
 
   const { removeTask } = props;
 

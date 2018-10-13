@@ -7,12 +7,7 @@ import { removeTask } from '../reducers/taskReducer';
 
 class StatusColumn extends React.PureComponent {
 
-  constructor(props) {
-    super(props);
-    this.removeTask = this.removeTask.bind(this);
-  }
-
-  removeTask(task) {
+  removeTask = task => {
     const { removeTask } = this.props;
     return () => removeTask(task);
   }
@@ -55,8 +50,9 @@ StatusColumn.defaultProps = {
   status: {}
 };
 
-const mapStateToProps = (state) => ({
-  selectedProject: state.projects.selected
+const mapStateToProps = state => ({
+  selectedProject: state.projects.all
+    .find(project => project.id === state.projects.selected)
 });
 
 export default connect(
