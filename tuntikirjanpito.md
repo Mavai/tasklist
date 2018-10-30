@@ -17,12 +17,12 @@ Ti 22.9. | 4 | Initialized node REST API |
 Ke 23.9. | 1 | Updated hours |
 Pe 25.9. | 2 | Added task update and delete to REST API |
 La 26.9. | 1 | Researching suitable DnD library |
-         | 4 | Initalized DnD in the taskboard |
+|         | 4 | Initalized DnD in the taskboard |
 Ke 3.10. | 4 | Changes to the taskboard layout saving logic |
 Ke 10.10. | 7 | Made it possible to move tasks between and within columns |
 Pe 12.10. | 1 | Refactoring |
 La 13.10. | 4 | Fixed adding and removing tasks |
-          | 1 | Refactoring |
+|          | 1 | Refactoring |
 Ma 15.10. | 3 | Started implementing modal to update a task |
 Ti 30.10. | 1 | Cleaned the hour log to match commit history a bit better |
-          | 2 | Finished implementing modal to update a task |
+|          | 2 | Finished implementing modal to update a task |
