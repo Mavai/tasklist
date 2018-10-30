@@ -1,8 +1,8 @@
-# Tuntikirjanpito
+# Hour log
 
 
-Päivä | Tunnit |
---- | :---: |
+Day | Hours | Description
+--- | :---: | :--- |
 Ke 14.3. | 1 | Initialized the application |
 To 15.3. | 4 | More functionality, started using react-router |
 Pe 16.3. | 4 | Started using redux |
