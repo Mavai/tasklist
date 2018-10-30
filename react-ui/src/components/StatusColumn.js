@@ -1,15 +1,32 @@
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Modal } from 'semantic-ui-react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import Task from './Task';
 import { connect } from 'react-redux';
-import { removeTask } from '../reducers/taskReducer';
+import { removeTask, updateTask, beginTaskEdit } from '../reducers/taskReducer';
+import TaskForm from './TaskForm';
 
 class StatusColumn extends React.PureComponent {
 
   removeTask = task => {
     const { removeTask } = this.props;
     return () => removeTask(task);
+  }
+
+  editTask = task => {
+    const { beginTaskEdit } = this.props;
+    return () => beginTaskEdit({ ...task, editMode: true });
+  }
+
+  stopTaskEdit = task => {
+    const { updateTask } = this.props;
+    return () => updateTask({ ...task, editMode: false }, false);
+  }
+
+  onSubmit = task => formData => event => {
+    event.preventDefault();
+    const { updateTask } = this.props;
+    updateTask({ ...task, ...formData, project: task.project.id });
   }
 
   render () {
@@ -31,7 +48,15 @@ class StatusColumn extends React.PureComponent {
                       { ...provided.draggableProps }
                       { ...provided.dragHandleProps }
                     >
-                      <Task task={task} removeTask={this.removeTask(task)} />
+                      <Task task={task} removeTask={this.removeTask(task)} editTask={this.editTask(task)} />
+                      <Modal open={task.editMode} onClose={this.stopTaskEdit(task)}>
+                        <Modal.Header>
+                          Edit task
+                        </Modal.Header>
+                        <Modal.Content>
+                          <TaskForm onSubmit={this.onSubmit(task)} onCancel={this.stopTaskEdit(task)} />
+                        </Modal.Content>
+                      </Modal>
                     </div>
                   )}
                 </Draggable>
@@ -57,5 +82,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { removeTask }
+  { removeTask, updateTask, beginTaskEdit }
 )(StatusColumn);

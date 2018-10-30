@@ -6,11 +6,20 @@ const initialState = {
 
 const taskFormReducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'INITIALIZE_TASK_FORM':
+      return action.initialData;
     case 'UPDATE_FORM':
       return { ...state, [action.name]: action.value };
     default:
       return state;
   }
+};
+
+export const initializeForm = (initialData) => {
+  return {
+    type: 'INITIALIZE_TASK_FORM',
+    initialData
+  };
 };
 
 export const updateForm = (event, data) => {

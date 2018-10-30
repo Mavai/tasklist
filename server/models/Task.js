@@ -10,6 +10,7 @@ mongoose.connect(url);
 
 const taskSchema = new Schema({
   name: String,
+  description: String,
   status: { type: mongoose.Schema.Types.ObjectId, ref: 'Status' },
   project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' }
 });
@@ -17,6 +18,7 @@ const taskSchema = new Schema({
 taskSchema.statics.format = (task) => {
   return {
     name: task.name,
+    description: task.description,
     status: Status.format(task.status),
     project: Project.format(task.project),
     id: task._id

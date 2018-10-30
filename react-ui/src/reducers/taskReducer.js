@@ -1,6 +1,7 @@
 import taskService from '../services/tasks';
 import projectService from '../services/projects';
 import { updateProject } from './projectReducer';
+import { initializeForm } from './taskFormReducer';
 import move from 'lodash-move';
 
 const initialState = [];
@@ -67,12 +68,22 @@ export const createTask = (newTask) => {
  * Update the given task.
  * @param {object} task Task to update
  */
-export const updateTask = (task) => async dispatch => {
-  const updatedTask = await taskService.update(task);
+export const updateTask = (task, save=true) => async dispatch => {
+  const updatedTask = save ? await taskService.update(task) : task;
   dispatch({
     type: 'UPDATE_TASK',
     task: updatedTask
   });
+};
+
+export const beginTaskEdit = (task) => dispatch => {
+  dispatch(updateTask(task, false));
+  const taskData = {
+    name: task.name || '',
+    description: task.description || '',
+    status: task.status.id || ''
+  };
+  dispatch(initializeForm(taskData));
 };
 
 /**

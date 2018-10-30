@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { createTask } from '../reducers/taskReducer';
 import { updateForm } from '../reducers/taskFormReducer';
@@ -7,20 +7,13 @@ import Placeholder from './Placeholder';
 
 class TaskForm extends React.PureComponent {
 
-  constructor(props) {
-    super(props);
-    this.createTask = this.createTask.bind(this);
-  }
-
-  createTask = async event => {
-    const { createTask, history, formData } = this.props;
-    event.preventDefault();
-    createTask(formData);
-    history.push('/');
+  onCancel = (e) => {
+    e.preventDefault();
+    this.props.onCancel();
   }
 
   render() {
-    const { statuses, formData, updateForm, selectedProject } = this.props;
+    const { statuses, formData, updateForm, selectedProject, onSubmit, onCancel } = this.props;
 
     if (!selectedProject) return (
       <Placeholder />
@@ -28,7 +21,7 @@ class TaskForm extends React.PureComponent {
 
     const options = statuses.map(status => ({ key: status.name, text: status.name, value: status.id }));
     return (
-      <Form onSubmit={this.createTask}>
+      <Form onSubmit={onSubmit(formData)}>
         <Form.Input
           label='Name'
           onChange={updateForm}
@@ -41,18 +34,22 @@ class TaskForm extends React.PureComponent {
           value={formData.description}
           name='description'
         />
-        <Form.Select
+        <Form.Dropdown
+          selection
           label='Status'
           options = {options}
           onChange={updateForm}
           name='status'
           placeholder='Status'
+          defaultValue={formData.status}
         />
         <Form.Field>
           <label>Project</label>
           <input readOnly value={selectedProject.name}></input>
         </Form.Field>
-        <Form.Button>Submit</Form.Button>
+        <Button type='submit'>Submit</Button>
+        { onCancel &&
+        <Button onClick={this.onCancel}>Cancel</Button> }
       </Form>
     );
   }

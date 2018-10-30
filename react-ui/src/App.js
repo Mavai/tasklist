@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { Container } from 'semantic-ui-react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
-import TaskForm from './components/TaskForm';
 import TaskBoard from './components/TaskBoard';
 import ProjectInfo from './components/ProjectInfo';
 import { initTasks } from './reducers/taskReducer';
 import { initStatuses } from './reducers/statusReducer';
 import { initProjects } from './reducers/projectReducer';
+import NewTaskForm from './components/NewTaskForm';
 
 class App extends PureComponent {
 
@@ -44,7 +44,7 @@ class App extends PureComponent {
             />
             <Route
               exact path='/create'
-              render={({ history }) => <TaskForm history={history} />}
+              render={({ history }) => <NewTaskForm history={history} />}
             />
           </Container>
         </div>
