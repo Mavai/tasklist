@@ -2,8 +2,7 @@ import React from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { createTask } from '../reducers/taskReducer';
-import { updateForm } from '../reducers/taskFormReducer';
-import Placeholder from './Placeholder';
+import { withFormik } from 'formik';
 
 class TaskForm extends React.PureComponent {
 
@@ -13,40 +12,32 @@ class TaskForm extends React.PureComponent {
   }
 
   render() {
-    const { statuses, formData, updateForm, selectedProject, onSubmit, onCancel } = this.props;
-
-    if (!selectedProject) return (
-      <Placeholder />
-    );
+    const { statuses, handleChange, setFieldValue, handleSubmit, onCancel, values } = this.props;
 
     const options = statuses.map(status => ({ key: status.name, text: status.name, value: status.id }));
     return (
-      <Form onSubmit={onSubmit(formData)}>
+      <Form onSubmit={handleSubmit}>
         <Form.Input
           label='Name'
-          onChange={updateForm}
-          value={formData.name}
+          onChange={handleChange}
+          value={values.name}
           name='name'
         />
         <Form.Input
           label='Description'
-          onChange={updateForm}
-          value={formData.description}
+          onChange={handleChange}
+          value={values.description}
           name='description'
         />
         <Form.Dropdown
           selection
           label='Status'
           options = {options}
-          onChange={updateForm}
+          onChange={(e, { name, value }) => setFieldValue(name, value)}
           name='status'
           placeholder='Status'
-          defaultValue={formData.status}
+          defaultValue={values.status}
         />
-        <Form.Field>
-          <label>Project</label>
-          <input readOnly value={selectedProject.name}></input>
-        </Form.Field>
         <Button type='submit'>Submit</Button>
         { onCancel &&
         <Button onClick={this.onCancel}>Cancel</Button> }
@@ -56,13 +47,27 @@ class TaskForm extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  statuses: state.statuses,
-  formData: state.taskForm,
-  selectedProject: state.projects.all
-    .find(project => project.id === state.projects.selected)
+  statuses: state.statuses
 });
+
+const FormikTaskForm = withFormik({
+  mapPropsToValues: ({ initialValues = {} }) => {
+    const { name = '', description = '', status = {} } = initialValues;
+    return {
+      name,
+      description,
+      status: status.id || ''
+    };
+  },
+  handleSubmit: (values, { setSubmitting }) => {
+    setTimeout(() => {
+      alert(JSON.stringify(values, null, 2));
+      setSubmitting(false);
+    }, 1000);
+  }
+})(TaskForm);
 
 export default connect(
   mapStateToProps,
-  { createTask, updateForm }
-)(TaskForm);
+  { createTask }
+)(FormikTaskForm);

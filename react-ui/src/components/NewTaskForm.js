@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createTask } from '../reducers/taskReducer';
-import { updateForm } from '../reducers/taskFormReducer';
 import Placeholder from './Placeholder';
 import TaskForm from './TaskForm';
 
@@ -34,5 +33,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { createTask, updateForm }
+  { createTask }
 )(NewTaskForm);

@@ -3,7 +3,7 @@ import { Grid, Modal } from 'semantic-ui-react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import Task from './Task';
 import { connect } from 'react-redux';
-import { removeTask, updateTask, beginTaskEdit } from '../reducers/taskReducer';
+import { removeTask, updateTask } from '../reducers/taskReducer';
 import TaskForm from './TaskForm';
 
 class StatusColumn extends React.PureComponent {
@@ -14,8 +14,8 @@ class StatusColumn extends React.PureComponent {
   }
 
   editTask = task => {
-    const { beginTaskEdit } = this.props;
-    return () => beginTaskEdit({ ...task, editMode: true });
+    const { updateTask } = this.props;
+    return () => updateTask({ ...task, editMode: true }, false);
   }
 
   stopTaskEdit = task => {
@@ -54,7 +54,7 @@ class StatusColumn extends React.PureComponent {
                           Edit task
                         </Modal.Header>
                         <Modal.Content>
-                          <TaskForm onSubmit={this.onSubmit(task)} onCancel={this.stopTaskEdit(task)} />
+                          <TaskForm onSubmit={this.onSubmit(task)} onCancel={this.stopTaskEdit(task)} initialValues={task} />
                         </Modal.Content>
                       </Modal>
                     </div>
@@ -82,5 +82,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { removeTask, updateTask, beginTaskEdit }
+  { removeTask, updateTask }
 )(StatusColumn);
