@@ -104,10 +104,7 @@ export const changeTaskStatus = (taskBoard, oldStatus, newStatus,
     ...selectedProject,
     taskBoard: calculateTaskBoard(taskBoard, oldStatus, newStatus, sourceIndex, destinationIndex, task)
   };
-  dispatch({
-    type: 'UPDATE_PROJECT',
-    project
-  });
+  dispatch(updateProject(project, false));
   dispatch(updateTask(task));
   const updatedProject = await projectService.update(project);
   dispatch(updateProject(updatedProject));

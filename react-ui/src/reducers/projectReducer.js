@@ -45,8 +45,8 @@ export const selectProject = (project) => {
   });
 };
 
-export const updateProject = (project) => async dispatch => {
-  const updatedProject = await projectService.update(project);
+export const updateProject = (project, save=true) => async dispatch => {
+  const updatedProject = save ? await projectService.update(project) : project;
   dispatch({
     type: 'UPDATE_PROJECT',
     project: updatedProject
