@@ -28,3 +28,4 @@ Ti 30.10. | 1 | Cleaned the hour log to match commit history a bit better |
 |          | 2 | Finished implementing modal to update a task |
 Ke 31.10. | 2 | Researching and trying suitable form library |
 |         | 1 | Started using `formik`
+Pe 2.11. | 3 | Refactoring taskboard updating logic |

@@ -1,7 +1,5 @@
 import taskService from '../services/tasks';
-import projectService from '../services/projects';
-import { updateProject } from './projectReducer';
-import move from 'lodash-move';
+import { updateTaskBoard } from './projectReducer';
 
 const initialState = [];
 
@@ -53,13 +51,7 @@ export const createTask = (newTask) => {
       type: 'CREATE_TASK',
       task
     });
-    const taskBoard = {
-      ...selectedProject.taskBoard,
-      [task.status.id]: [ ...selectedProject.taskBoard[task.status.id], task.id ]
-    };
-    const project = { ...selectedProject, taskBoard };
-    const updatedProject = await projectService.update(project);
-    dispatch(updateProject(updatedProject));
+    dispatch(updateTaskBoard('add', selectedProject, task));
   };
 };
 
@@ -67,36 +59,30 @@ export const createTask = (newTask) => {
  * Update the given task.
  * @param {object} task Task to update
  */
-export const updateTask = (task, save=true) => async dispatch => {
+export const updateTask = (task, save=true, boardInfo) => async (dispatch, getState) => {
   const updatedTask = save ? await taskService.update(task) : task;
   dispatch({
     type: 'UPDATE_TASK',
     task: updatedTask
   });
+  if (boardInfo) {
+    const { all: projects, selected } = getState().projects;
+    const selectedProject = projects
+      .find(project => project.id === selected);
+    dispatch(updateTaskBoard('update', selectedProject, updatedTask, boardInfo));
+  }
 };
 
 /**
  * Change status of a task and update current project's taskboard.
- * @param {object} taskBoard Current taskboard
- * @param {string} oldStatus Id of the orevious status
- * @param {string} newStatus Id of the new status
- * @param {number} sourceIndex Index in the previous column
- * @param {number} destinationIndex Index in the new column
  * @param {object} task Task to update
  */
-export const changeTaskStatus = (taskBoard, oldStatus, newStatus,
-  sourceIndex, destinationIndex, task) => async (dispatch, getState) => {
+export const changeTaskStatus = (task, boardInfo) => async (dispatch, getState) => {
+  dispatch(updateTask(task));
   const { all: projects, selected } = getState().projects;
   const selectedProject = projects
     .find(project => project.id === selected);
-  const project = {
-    ...selectedProject,
-    taskBoard: calculateTaskBoard(taskBoard, oldStatus, newStatus, sourceIndex, destinationIndex, task)
-  };
-  dispatch(updateProject(project, false));
-  dispatch(updateTask(task));
-  const updatedProject = await projectService.update(project);
-  dispatch(updateProject(updatedProject));
+  dispatch(updateTaskBoard('update', selectedProject, task, boardInfo));
 };
 
 /**
@@ -113,44 +99,8 @@ export const removeTask = (task) => {
       type: 'DELETE_TASK',
       task
     });
-    const taskBoard = {
-      ...selectedProject.taskBoard,
-      [task.status.id]: selectedProject.taskBoard[task.status.id]
-        .filter(taskId => taskId !== task.id)
-    };
-    const project = { ...selectedProject, taskBoard };
-    const updatedProject = await projectService.update(project);
-    dispatch(updateProject(updatedProject));
+    updateTaskBoard('remove', selectedProject, task);
   };
 };
-
-/**
- * Calculates new taskboard when a taks's status is changed.
- * @param {object} taskBoard Current taskboard
- * @param {string} oldStatus Id of the orevious status
- * @param {string} newStatus Id of the new status
- * @param {number} sourceIndex Index in the previous column
- * @param {number} destinationIndex Index in the new column
- * @param {object} task Task to update
- */
-const calculateTaskBoard = (taskBoard, oldStatus, newStatus, sourceIndex, destinationIndex, task) => {
-  if (oldStatus !== newStatus) {
-    return {
-      ...taskBoard,
-      [oldStatus]: taskBoard[oldStatus].filter((task, index) => index !== sourceIndex),
-      [newStatus]: [
-        ...taskBoard[newStatus].slice(0, destinationIndex),
-        task.id,
-        ...taskBoard[newStatus].slice(destinationIndex)
-      ]
-    };
-  } else {
-    return {
-      ...taskBoard,
-      [oldStatus]: move(taskBoard[oldStatus], sourceIndex, destinationIndex)
-    };
-  }
-};
-
 
 export default taskReducer;

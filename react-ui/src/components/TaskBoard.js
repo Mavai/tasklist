@@ -17,7 +17,7 @@ class TaskBoard extends React.PureComponent {
     const taskId = taskBoard[oldStatus][sourceIndex];
     const task = tasks[taskId];
     const updatedTask = { ...task, status: newStatus, project: task.project.id };
-    await changeTaskStatus(taskBoard, oldStatus, newStatus, sourceIndex, destinationIndex, updatedTask);
+    await changeTaskStatus(updatedTask, { oldStatus, newStatus, sourceIndex, destinationIndex });
   };
 
   getColumnTasks = (column = []) => {

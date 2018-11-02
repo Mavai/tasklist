@@ -23,10 +23,17 @@ class StatusColumn extends React.PureComponent {
     return () => updateTask({ ...task, editMode: false }, false);
   }
 
-  onSubmit = task => formData => event => {
-    event.preventDefault();
+  onSubmit = task => formData => {
     const { updateTask } = this.props;
-    updateTask({ ...task, ...formData, project: task.project.id });
+    let boardInfo = null;
+    if (task.status.id !== formData.status) {
+      boardInfo = {
+        oldStatus: task.status.id,
+        newStatus: formData.status,
+        destinationIndex: Infinity
+      };
+    }
+    updateTask({ ...task, ...formData, project: task.project.id }, true, boardInfo);
   }
 
   render () {

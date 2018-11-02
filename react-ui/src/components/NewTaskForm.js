@@ -6,8 +6,7 @@ import TaskForm from './TaskForm';
 
 class NewTaskForm extends React.PureComponent {
 
-  createTask = formData => event => {
-    event.preventDefault();
+  createTask = formData => {
     const { createTask, history } = this.props;
     createTask(formData);
     history.push('/');

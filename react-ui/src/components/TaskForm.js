@@ -59,11 +59,8 @@ const FormikTaskForm = withFormik({
       status: status.id || ''
     };
   },
-  handleSubmit: (values, { setSubmitting }) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      setSubmitting(false);
-    }, 1000);
+  handleSubmit: (values, { props }) => {
+    props.onSubmit(values);
   }
 })(TaskForm);
 
