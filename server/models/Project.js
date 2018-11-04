@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const config = require('../utils/config');
-
-const url = config.mongoUrl;
-
-mongoose.connect(url);
 
 const projectSchema = new Schema({
   name: String,
@@ -13,6 +8,7 @@ const projectSchema = new Schema({
 });
 
 projectSchema.statics.format = (project) => {
+  if (!project) return null;
   return {
     name: project.name,
     taskBoard: project.taskBoard,

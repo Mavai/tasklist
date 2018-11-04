@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const config = require('../utils/config');
-
-const url = config.mongoUrl;
-
-mongoose.connect(url);
 
 const statusSchema = new Schema({
   name: String,
@@ -12,6 +7,7 @@ const statusSchema = new Schema({
 });
 
 statusSchema.statics.format = (status) => {
+  if (!status) return null;
   return {
     name: status.name,
     color: status.color,

@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - node
+install:
+  - npm install
+  - npm --prefix react-ui install
+script:
+  - npm run test
+  - npm run --prefix react-ui build

@@ -2,11 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Status = require('./Status');
 const Project = require('./Project');
-const config = require('../utils/config');
-
-const url = config.mongoUrl;
-
-mongoose.connect(url);
 
 const taskSchema = new Schema({
   name: String,
