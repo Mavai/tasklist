@@ -5,5 +5,4 @@ install:
   - npm install
   - npm --prefix react-ui install
 script:
-  - npm run test
-  - npm run --prefix react-ui build
+  - npm run test -- --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
