@@ -4,13 +4,14 @@ const Status = require('./Status');
 const Project = require('./Project');
 
 const taskSchema = new Schema({
-  name: String,
+  name: { type: String, required: [true, 'Name is required'] },
   description: String,
   status: { type: mongoose.Schema.Types.ObjectId, ref: 'Status' },
   project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' }
 });
 
 taskSchema.statics.format = (task) => {
+  if (!task) return null;
   return {
     name: task.name,
     description: task.description,

@@ -29,3 +29,8 @@ Ti 30.10. | 1 | Cleaned the hour log to match commit history a bit better |
 Ke 31.10. | 2 | Researching and trying suitable form library |
 |         | 1 | Started using `formik`
 Pe 2.11. | 3 | Refactoring taskboard updating logic |
+Su 4.11. | 3 | Backend testing & travis configurations |
+Ma 5.11. | 1 | Separated UI & backed repos & coveralls configurations |
+Ti 6.11. | 3 | Backend testing |
+--- | --- | --- |
+**Total** | **70** | |
