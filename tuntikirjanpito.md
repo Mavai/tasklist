@@ -32,5 +32,6 @@ Pe 2.11. | 3 | Refactoring taskboard updating logic |
 Su 4.11. | 3 | Backend testing & travis configurations |
 Ma 5.11. | 1 | Separated UI & backed repos & coveralls configurations |
 Ti 6.11. | 3 | Backend testing |
+|        | 2 | More backend testing |
 --- | --- | --- |
 **Total** | **70** | |

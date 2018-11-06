@@ -19,7 +19,7 @@ projectRouter.put('/:id', async (request, response) => {
       .findByIdAndUpdate(request.params.id, project, { new: true });
     response.status(203).json(Project.format(updatedProject));
   } catch (excpetion) {
-    console.warn(excpetion);
+    console.warn(excpetion.message);
     response.status(500).json({ error: 'Something went wrong when updating a project.' });
   }
 });
