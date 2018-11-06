@@ -30,9 +30,11 @@ app.use('/api/tasks', taskRouter);
 const server = http.createServer(app);
 
 const PORT = config.port;
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+if (!module.parent) {
+  server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
 server.on('close', () => {
   mongoose.connection.close();

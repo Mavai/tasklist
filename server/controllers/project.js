@@ -11,6 +11,9 @@ projectRouter.get('/', async (request, response) => {
 projectRouter.put('/:id', async (request, response) => {
   try {
     const body = request.body;
+    if (body.name === undefined) {
+      return response.status(400).json({ error: 'Name missing' });
+    }
     const project = { ...body, test: 'test' };
     const updatedProject = await Project
       .findByIdAndUpdate(request.params.id, project, { new: true });

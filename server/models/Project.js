@@ -2,9 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const projectSchema = new Schema({
-  name: String,
-  taskBoard: Schema.Types.Mixed,
-  test: String
+  name: { type: String, required: [true, 'Name is required'] },
+  taskBoard: Schema.Types.Mixed
 });
 
 projectSchema.statics.format = (project) => {

@@ -37,6 +37,10 @@
     "supertest": "^3.3.0"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "index.js",
+      "/utils/"
+    ]
   }
 }
