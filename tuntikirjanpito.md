@@ -33,5 +33,11 @@ Su 4.11. | 3 | Backend testing & travis configurations |
 Ma 5.11. | 1 | Separated UI & backed repos & coveralls configurations |
 Ti 6.11. | 3 | Backend testing |
 |        | 2 | More backend testing |
+Ke 7.11. | 2 | Front end component testing |
+La 10.11. | 4 | Front end component testing |
+Su 11.10. | 3 | Refactoring |
+Ma 12.10. | 2 | Component testing & refactoring |
+Ti 13.10. | 4 | Component testing & refactoring |
+Ke 14.10. | 4 | Refactoring & reducer, action & operation testing |
 --- | --- | --- |
-**Total** | **70** | |
+**Total** | **89** | |

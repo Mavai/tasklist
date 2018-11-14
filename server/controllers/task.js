@@ -23,7 +23,10 @@ taskRouter.post('/', async (request, response) => {
     if (body.name === undefined) {
       return response.status(400).json({ error: 'Name missing' });
     }
-    const task = new Task({ ...body });
+    const project = typeof body.project === 'object'
+      ? body.project.id
+      : body.project;
+    const task = new Task({ ...body, project });
     const savedTask = await task.save();
     response.status(201).json(Task.format(savedTask));
   } catch(excpetion) {
@@ -39,7 +42,10 @@ taskRouter.put('/:id', async (request, response) => {
     if (body.name === undefined) {
       return response.status(400).json({ error: 'Name missing' });
     }
-    const task = { ...body };
+    const project = typeof body.project === 'object'
+      ? body.project.id
+      : body.project;
+    const task = { ...body, project };
     const updatedTask = await Task
       .findByIdAndUpdate(request.params.id, task, { new: true });
     response.status(203).json(Task.format(updatedTask));
