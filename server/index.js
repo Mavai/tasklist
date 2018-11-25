@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const statusRouter = require('./controllers/status');
 const projectRouter = require('./controllers/project');
 const taskRouter = require('./controllers/task');
+const taskboardRouter = require('./controllers/taskboard');
 
 mongoose.connect(config.mongoUrl, { useNewUrlParser: true })
   .then(() => {
@@ -26,6 +27,7 @@ app.use(bodyParser.json());
 app.use('/api/statuses', statusRouter);
 app.use('/api/projects', projectRouter);
 app.use('/api/tasks', taskRouter);
+app.use('/api/taskboards', taskboardRouter);
 
 const server = http.createServer(app);
 
