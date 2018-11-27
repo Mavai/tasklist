@@ -25,7 +25,7 @@
     "cors": "^2.8.4",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
-    "mongoose": "^5.3.7"
+    "mongoose": "5.3.13"
   },
   "devDependencies": {
     "babel-eslint": "^9.0.0",
@@ -34,6 +34,7 @@
     "eslint": "^5.8.0",
     "jest": "^23.6.0",
     "nodemon": "^1.18.5",
+    "prettier": "1.15.2",
     "supertest": "^3.3.0"
   },
   "jest": {

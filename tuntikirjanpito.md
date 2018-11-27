@@ -39,5 +39,16 @@ Su 11.10. | 3 | Refactoring |
 Ma 12.10. | 2 | Component testing & refactoring |
 Ti 13.10. | 4 | Component testing & refactoring |
 Ke 14.10. | 4 | Refactoring & reducer, action & operation testing |
+To 15.10. | 1 | Separated reducers, actions & operations |
+|| 3 | Tests for reducers, actions & services |
+La 17.11 | 3 | Tests for project operations |
+Su 18.11. | 3 | Tests for status & task operations |
+Ti 20.11. | 5 | Refactored some logic and tests |
+Ke 21.11. | 3 | Implemented task filtering to taskboard & updated tests |
+La 24.11. | 2 | Ordering tasks in taskboard & learning css |
+|         | 2 | Separated taskboard to a new reducer |
+Su 25.11. | 3 | Continuing with new taskboard model and controller |
+Ma 26.11. | 1 | Fixes to the new taskboard logic |
+
 --- | --- | --- |
-**Total** | **89** | |
+**Total** | **115** | |

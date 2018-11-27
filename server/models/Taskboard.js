@@ -7,7 +7,7 @@ const taskboardSchema = new Schema({
   project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' }
 });
 
-taskboardSchema.statics.format = (taskboard) => {
+taskboardSchema.statics.format = taskboard => {
   if (!taskboard) return null;
   return {
     name: taskboard.name,

@@ -2,8 +2,7 @@ const taskRouter = require('express').Router();
 const Task = require('../models/Task');
 
 taskRouter.get('/', async (request, response) => {
-  const tasks = await Task
-    .find({})
+  const tasks = await Task.find({})
     .populate('status')
     .populate('project');
 
@@ -11,8 +10,7 @@ taskRouter.get('/', async (request, response) => {
 });
 
 taskRouter.get('/project/:projectId', async (request, response) => {
-  const statuses = await Task
-    .find({ project: request.params.projectId });
+  const statuses = await Task.find({ project: request.params.projectId });
 
   response.json(statuses.map(Task.format));
 });
@@ -23,17 +21,17 @@ taskRouter.post('/', async (request, response) => {
     if (body.name === undefined) {
       return response.status(400).json({ error: 'Name missing' });
     }
-    const project = typeof body.project === 'object'
-      ? body.project.id
-      : body.project;
+    const project =
+      typeof body.project === 'object' ? body.project.id : body.project;
     const task = new Task({ ...body, project });
     const savedTask = await task.save();
     response.status(201).json(Task.format(savedTask));
-  } catch(excpetion) {
+  } catch (excpetion) {
     console.warn(excpetion.message);
-    response.status(500).json({ error: 'Something went wrong when creating a task' });
+    response
+      .status(500)
+      .json({ error: 'Something went wrong when creating a task' });
   }
-
 });
 
 taskRouter.put('/:id', async (request, response) => {
@@ -42,16 +40,20 @@ taskRouter.put('/:id', async (request, response) => {
     if (body.name === undefined) {
       return response.status(400).json({ error: 'Name missing' });
     }
-    const project = typeof body.project === 'object'
-      ? body.project.id
-      : body.project;
+    const project =
+      typeof body.project === 'object' ? body.project.id : body.project;
     const task = { ...body, project };
-    const updatedTask = await Task
-      .findOneAndUpdate({ _id: request.params.id }, task, { new: true });
+    const updatedTask = await Task.findOneAndUpdate(
+      { _id: request.params.id },
+      task,
+      { new: true }
+    );
     response.status(203).json(Task.format(updatedTask));
   } catch (excpetion) {
     console.warn(excpetion.message);
-    response.status(500).json({ error: 'Something went wrong when updating a task.' });
+    response
+      .status(500)
+      .json({ error: 'Something went wrong when updating a task.' });
   }
 });
 
@@ -61,7 +63,9 @@ taskRouter.delete('/:id', async (request, response) => {
     response.status(204).json(Task.format(deletedTask));
   } catch (excpetion) {
     console.warn(excpetion.message);
-    response.status(500).json({ error: 'Something went wrong when deletinig a task' });
+    response
+      .status(500)
+      .json({ error: 'Something went wrong when deletinig a task' });
   }
 });
 

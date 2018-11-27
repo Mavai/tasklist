@@ -15,8 +15,7 @@ const initialStatuses = [
 describe('When there are initiallystatuses saved', async () => {
   beforeAll(async () => {
     await Status.deleteMany({});
-    const statusObjects = initialStatuses.map(
-      status => new Status(status));
+    const statusObjects = initialStatuses.map(status => new Status(status));
     const promiseArray = statusObjects.map(status => status.save());
     await Promise.all(promiseArray);
   });
@@ -29,8 +28,7 @@ describe('When there are initiallystatuses saved', async () => {
   });
 
   test('GET /api/statuses works', async () => {
-    const response = await api
-      .get('/api/statuses');
+    const response = await api.get('/api/statuses');
     expect(response.body.length).toBe(initialStatuses.length);
   });
 

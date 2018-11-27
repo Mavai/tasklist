@@ -22,7 +22,8 @@ describe('When there are initially tasks saved', async () => {
   beforeAll(async () => {
     await Task.deleteMany({});
     const taskObjects = initialTasks.map(
-      task => new Task({ ...task, project: projectId }));
+      task => new Task({ ...task, project: projectId })
+    );
     const promiseArray = taskObjects.map(task => task.save());
     await Promise.all(promiseArray);
   });
@@ -35,26 +36,22 @@ describe('When there are initially tasks saved', async () => {
   });
 
   test('GET /api/tasks works', async () => {
-    const response = await api
-      .get('/api/tasks');
+    const response = await api.get('/api/tasks');
     expect(response.body.length).toBe(initialTasks.length);
   });
 
   test('GET /api/tasks/project/:projectId works with valid id', async () => {
-    const response = await api
-      .get(`/api/tasks/project/${projectId}`);
+    const response = await api.get(`/api/tasks/project/${projectId}`);
     expect(response.body.length).toBe(initialTasks.length);
   });
 
   test('GET /api/tasks/project/:projectId works with invalid id', async () => {
     const invalidId = await nonExistingObjectId(Project);
-    const response = await api
-      .get(`/api/tasks/project/${invalidId}`);
+    const response = await api.get(`/api/tasks/project/${invalidId}`);
     expect(response.body.length).toBe(0);
   });
 
   describe('Addition of a new task', async () => {
-
     test('A valid task can be added', async () => {
       const newTask = {
         name: 'Test name',
@@ -109,7 +106,9 @@ describe('When there are initially tasks saved', async () => {
         .send({ name: newTask.name, description: 'I have been updated' })
         .expect(203);
       const taskAfterOperation = await Task.findOne({ _id: newTask._id });
-      expect(taskBeforeOperation.description).not.toBe(taskAfterOperation.description);
+      expect(taskBeforeOperation.description).not.toBe(
+        taskAfterOperation.description
+      );
       expect(response.body.description).toBe('I have been updated');
       expect(taskAfterOperation.description).toBe('I have been updated');
     });
@@ -141,9 +140,7 @@ describe('When there are initially tasks saved', async () => {
 
     test('DELETE /api/tasks/:id with valid id works', async () => {
       const tasksBeforeOperation = await objectsInDb(Task);
-      await api
-        .delete(`/api/tasks/${newTask.id}`)
-        .expect(204);
+      await api.delete(`/api/tasks/${newTask.id}`).expect(204);
       const tasksAfterOperation = await objectsInDb(Task);
       expect(tasksAfterOperation.length).toBe(tasksBeforeOperation.length - 1);
     });
@@ -151,17 +148,13 @@ describe('When there are initially tasks saved', async () => {
     test('DELETE /api/tasks/:id with non existing id works', async () => {
       const taskId = await nonExistingObjectId(Task);
       const tasksBeforeOperation = await objectsInDb(Task);
-      await api
-        .delete(`/api/tasks/${taskId}`)
-        .expect(204);
+      await api.delete(`/api/tasks/${taskId}`).expect(204);
       const tasksAfterOperation = await objectsInDb(Task);
       expect(tasksAfterOperation.length).toBe(tasksBeforeOperation.length);
     });
 
     test('DELETE /api/tasks/:id with invalid id works', async () => {
-      await api
-        .delete('/api/tasks/1')
-        .expect(500);
+      await api.delete('/api/tasks/1').expect(500);
     });
   });
 

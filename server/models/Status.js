@@ -6,7 +6,7 @@ const statusSchema = new Schema({
   color: String
 });
 
-statusSchema.statics.format = (status) => {
+statusSchema.statics.format = status => {
   if (!status) return null;
   return {
     name: status.name,

@@ -11,7 +11,11 @@ const projectRouter = require('./controllers/project');
 const taskRouter = require('./controllers/task');
 const taskboardRouter = require('./controllers/taskboard');
 
-mongoose.connect(config.mongoUrl, { useNewUrlParser: true })
+mongoose
+  .connect(
+    config.mongoUrl,
+    { useNewUrlParser: true }
+  )
   .then(() => {
     console.log('Connected to database', config.mongoUrl);
   })
@@ -43,5 +47,6 @@ server.on('close', () => {
 });
 
 module.exports = {
-  app, server
+  app,
+  server
 };
