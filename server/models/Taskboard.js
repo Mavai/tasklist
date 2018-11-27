@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Project = require('./Project');
 
 const taskboardSchema = new Schema({
   name: { type: String },
@@ -13,7 +12,7 @@ taskboardSchema.statics.format = (taskboard) => {
   return {
     name: taskboard.name,
     board: taskboard.board,
-    project: Project.format(taskboard.project),
+    project: taskboard.project,
     id: taskboard._id
   };
 };

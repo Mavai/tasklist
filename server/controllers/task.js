@@ -47,7 +47,7 @@ taskRouter.put('/:id', async (request, response) => {
       : body.project;
     const task = { ...body, project };
     const updatedTask = await Task
-      .findByIdAndUpdate(request.params.id, task, { new: true });
+      .findOneAndUpdate({ _id: request.params.id }, task, { new: true });
     response.status(203).json(Task.format(updatedTask));
   } catch (excpetion) {
     console.warn(excpetion.message);
@@ -57,7 +57,7 @@ taskRouter.put('/:id', async (request, response) => {
 
 taskRouter.delete('/:id', async (request, response) => {
   try {
-    const deletedTask = await Task.findByIdAndRemove(request.params.id);
+    const deletedTask = await Task.findOneAndDelete({ _id: request.params.id });
     response.status(204).json(Task.format(deletedTask));
   } catch (excpetion) {
     console.warn(excpetion.message);

@@ -37,16 +37,9 @@ taskboardRouter.post('/', async (request, response) => {
 
 taskboardRouter.put('/:id', async (request, response) => {
   try {
-    const body = request.body;
-    if (body.name === undefined) {
-      return response.status(400).json({ error: 'Name missing' });
-    }
-    const project = typeof body.project === 'object'
-      ? body.project.id
-      : body.project;
-    const taskboard = { ...body, project };
+    const taskboard = request.body;
     const updatedTask = await Taskboard
-      .findByIdAndUpdate(request.params.id, taskboard, { new: true });
+      .findByIdAndUpdate({ _id: request.params.id }, taskboard, { new: true });
     response.status(203).json(Taskboard.format(updatedTask));
   } catch (excpetion) {
     console.warn(excpetion.message);
