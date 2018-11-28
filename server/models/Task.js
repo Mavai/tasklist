@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Status = require('./Status');
-const Project = require('./Project');
 
 const taskSchema = new Schema(
   {
@@ -21,7 +20,7 @@ taskSchema.statics.format = task => {
     createdAt: task.createdAt,
     updatedAt: task.updatedAt,
     status: Status.format(task.status),
-    project: Project.format(task.project),
+    project: task.project._id,
     id: task._id
   };
 };

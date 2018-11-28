@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const taskboardSchema = new Schema({
   name: { type: String },
-  board: Schema.Types.Mixed,
+  layout: Schema.Types.Mixed,
   project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' }
 });
 
@@ -11,7 +11,7 @@ taskboardSchema.statics.format = taskboard => {
   if (!taskboard) return null;
   return {
     name: taskboard.name,
-    board: taskboard.board,
+    layout: taskboard.layout,
     project: taskboard.project,
     id: taskboard._id
   };

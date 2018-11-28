@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const projectSchema = new Schema({
   name: { type: String, required: [true, 'Name is required'] },
-  taskboard: Schema.Types.Mixed,
   taskboards: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Taskboard' }]
 });
 
@@ -11,8 +10,10 @@ projectSchema.statics.format = project => {
   if (!project) return null;
   return {
     name: project.name,
-    taskboard: project.taskboard,
-    taskboards: project.taskboards,
+    taskboards: project.taskboards.map(taskboard => ({
+      id: taskboard._id,
+      name: taskboard.name
+    })),
     id: project._id
   };
 };
