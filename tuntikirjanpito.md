@@ -51,5 +51,9 @@
 | Ti 27.11. |    2    | Continuing fixing taskboard logic                          |
 |           |    1    | Refactoring                                                |
 |           |    1    | Started using `prettier`                                   |
+| Ke 28.11. |    2    | Added possiblity to choose taskboard when creating a task  |
+| To 29.11. |    1    | Imporved error catching                                    |
+| Pe 30.11. |    1    | More error handling                                        |
+| La 1.12.  |    1    | Fixes to task dragging when filters are active             |
 |           |         |                                                            |
-| **Total** | **121** |                                                            |
+| **Total** | **126** |                                                            |
