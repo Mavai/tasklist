@@ -54,6 +54,7 @@
 | Ke 28.11. |    2    | Added possiblity to choose taskboard when creating a task  |
 | To 29.11. |    1    | Imporved error catching                                    |
 | Pe 30.11. |    1    | More error handling                                        |
-| La 1.12.  |    1    | Fixes to task dragging when filters are active             |
+| La 1.12.  |    3    | Fixes to task dragging when filters are active             |
+| La 1.12.  |    2    | Implemented backlog                                        |
 |           |         |                                                            |
-| **Total** | **126** |                                                            |
+| **Total** | **130** |                                                            |
