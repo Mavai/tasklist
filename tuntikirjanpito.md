@@ -59,4 +59,4 @@
 | Pe 14.12. |    1    | css stuff                                                  |
 | La 15.12. |    1    | Connected task to taskboard.                               |
 |           |         |                                                            |
-| **Total** | **130** |                                                            |
+| **Total** | **132** |                                                            |
