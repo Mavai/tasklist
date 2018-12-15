@@ -23,7 +23,8 @@ taskRouter.post('/', async (request, response) => {
     }
     const project =
       typeof body.project === 'object' ? body.project.id : body.project;
-    const task = new Task({ ...body, project });
+    const taskboard = body.taskboard === 'backlog' ? null : body.taskboard;
+    const task = new Task({ ...body, project, taskboard });
     const savedTask = await task.save();
     response.status(201).json(Task.format(savedTask));
   } catch (excpetion) {

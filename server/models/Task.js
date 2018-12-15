@@ -7,6 +7,7 @@ const taskSchema = new Schema(
     name: { type: String, required: [true, 'Name is required'] },
     description: String,
     status: { type: mongoose.Schema.Types.ObjectId, ref: 'Status' },
+    taskboard: { type: mongoose.Schema.Types.ObjectId, ref: 'Taskboard' },
     project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' }
   },
   { timestamps: true }
@@ -20,6 +21,7 @@ taskSchema.statics.format = task => {
     createdAt: task.createdAt,
     updatedAt: task.updatedAt,
     status: Status.format(task.status),
+    taskboard: task.taskboard ? task.taskboard._id : null,
     project: task.project._id,
     id: task._id
   };
