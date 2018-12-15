@@ -13,7 +13,7 @@ const initialStatuses = [
 ];
 
 describe('When there are initiallystatuses saved', async () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await Status.deleteMany({});
     const statusObjects = initialStatuses.map(status => new Status(status));
     const promiseArray = statusObjects.map(status => status.save());

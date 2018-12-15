@@ -5,7 +5,6 @@ taskRouter.get('/', async (request, response) => {
   const tasks = await Task.find({})
     .populate('status')
     .populate('project');
-
   response.json(tasks.map(Task.format));
 });
 

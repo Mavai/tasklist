@@ -22,7 +22,7 @@ taskSchema.statics.format = task => {
     updatedAt: task.updatedAt,
     status: Status.format(task.status),
     taskboard: task.taskboard ? task.taskboard._id : null,
-    project: task.project._id,
+    project: task.project ? task.project._id : null,
     id: task._id
   };
 };

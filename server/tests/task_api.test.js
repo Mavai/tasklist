@@ -19,7 +19,7 @@ const initialTasks = [
 
 describe('When there are initially tasks saved', async () => {
   let projectId = mongoose.Types.ObjectId();
-  beforeAll(async () => {
+  beforeEach(async () => {
     await Task.deleteMany({});
     const taskObjects = initialTasks.map(
       task => new Task({ ...task, project: projectId })
@@ -92,7 +92,7 @@ describe('When there are initially tasks saved', async () => {
   describe('Updating an existing task', async () => {
     let newTask;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       newTask = await Task.create({
         name: 'Test name',
         description: 'I will be updated.'
@@ -131,7 +131,7 @@ describe('When there are initially tasks saved', async () => {
   describe('Deleting a task', async () => {
     let newTask;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       newTask = await Task.create({
         name: 'Test task',
         description: 'I will be deleted'

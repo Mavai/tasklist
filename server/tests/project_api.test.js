@@ -13,7 +13,7 @@ const initialProjects = [
 ];
 
 describe('When there are initially projects saved', async () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await Project.deleteMany({});
     const projectObjects = initialProjects.map(project => new Project(project));
     const promiseArray = projectObjects.map(project => project.save());
@@ -35,7 +35,7 @@ describe('When there are initially projects saved', async () => {
   describe('Updating an existing project', async () => {
     let newProject;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       newProject = await Project.create({
         name: 'Test Project'
       });
