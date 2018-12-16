@@ -58,5 +58,7 @@
 | La 1.12.  |    2    | Implemented backlog                                        |
 | Pe 14.12. |    1    | css stuff                                                  |
 | La 15.12. |    1    | Connected task to taskboard.                               |
+| La 15.12. |    2    | Debugging & fixing tests                                   |
+| Su 16.12. |    2    | User model for backend                                     |
 |           |         |                                                            |
-| **Total** | **132** |                                                            |
+| **Total** | **136** |                                                            |
