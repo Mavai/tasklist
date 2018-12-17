@@ -13,7 +13,8 @@ userSchema.statics.format = user => {
     id: user._id,
     username: user.username,
     name: user.name,
-    projects: user.projects
+    projects: user.projects,
+    passwordHash: user.passwordHash
   };
 };
 
