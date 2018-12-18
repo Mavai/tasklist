@@ -38,12 +38,12 @@ taskboardRouter.post('/', async (request, response) => {
 taskboardRouter.put('/:id', async (request, response) => {
   try {
     const taskboard = request.body;
-    const updatedTask = await Taskboard.findOneAndUpdate(
+    const updatedTaskboard = await Taskboard.findOneAndUpdate(
       { _id: request.params.id },
       taskboard,
       { new: true }
     );
-    response.status(203).json(Taskboard.format(updatedTask));
+    response.status(203).json(Taskboard.format(updatedTaskboard));
   } catch (excpetion) {
     console.warn(excpetion.message);
     response
