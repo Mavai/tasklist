@@ -60,5 +60,7 @@
 | La 15.12. |    1    | Connected task to taskboard.                               |
 | La 15.12. |    2    | Debugging & fixing tests                                   |
 | Su 16.12. |    2    | User model for backend                                     |
+| Ma 17.12. |    3    | Registration form & new project form.                      |
+| Ma 17.12. |    1    | Login form & authentication.                               |
 |           |         |                                                            |
-| **Total** | **136** |                                                            |
+| **Total** | **140** |                                                            |

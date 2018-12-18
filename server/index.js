@@ -11,6 +11,7 @@ const projectRouter = require('./controllers/project');
 const taskRouter = require('./controllers/task');
 const taskboardRouter = require('./controllers/taskboard');
 const userRouter = require('./controllers/users');
+const loginRouter = require('./controllers/login');
 
 mongoose
   .connect(
@@ -34,6 +35,7 @@ app.use('/api/projects', projectRouter);
 app.use('/api/tasks', taskRouter);
 app.use('/api/taskboards', taskboardRouter);
 app.use('/api/users', userRouter);
+app.use('/api/login', loginRouter);
 
 const server = http.createServer(app);
 
