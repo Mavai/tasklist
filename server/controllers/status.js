@@ -20,14 +20,9 @@ const initialStatuses = [
 statusRouter.get('/', async (request, response) => {
   let statuses = await Status.find({});
 
-  if (statuses.length === 0) {
-    const newStatuses = initialStatuses.map(status => {
-      Status.create(status);
-    });
-    await Promise.all(newStatuses);
-    statuses = await Status.find({});
-  }
-
+  const promisearray = initialStatuses.map(status => Status.create(status));
+  await Promise.all(promisearray);
+  statuses = await Status.find({});
   response.json(statuses.map(Status.format));
 });
 
