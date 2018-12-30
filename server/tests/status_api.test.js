@@ -29,7 +29,7 @@ describe('When there are initiallystatuses saved', async () => {
 
   test('GET /api/statuses works', async () => {
     const response = await api.get('/api/statuses');
-    expect(response.body.length).toBe(initialStatuses.length);
+    expect(response.body.length).toBe(4);
   });
 
   afterAll(() => {
