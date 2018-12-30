@@ -14,7 +14,7 @@ projectRouter.post('/', async (request, response) => {
       return response.status(400).json({ error: 'Name missing' });
     }
     const project = new Project({ ...body });
-    await project.save()
+    await project.save();
     response.status(201).json(Project.format(project));
   } catch (excpetion) {
     console.warn(excpetion.message);
@@ -22,6 +22,7 @@ projectRouter.post('/', async (request, response) => {
       .status(500)
       .json({ error: 'Something went wrong when creating a project.' });
   }
+});
 
 projectRouter.put('/:id', async (request, response) => {
   try {
