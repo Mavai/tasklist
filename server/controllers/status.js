@@ -21,7 +21,7 @@ statusRouter.get('/', async (request, response) => {
   let statuses = await Status.find({});
 
   if (statuses.length !== 4) {
-    await Status.removeListener({});
+    await Status.remove({});
     const promisearray = initialStatuses.map(status => Status.create(status));
     await Promise.all(promisearray);
     statuses = await Status.find({});
