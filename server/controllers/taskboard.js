@@ -2,16 +2,8 @@ const taskboardRouter = require('express').Router();
 const Taskboard = require('../models/Taskboard');
 const Project = require('../models/Project');
 
-const initialTaskboard = {
-  name: 'My taskboard'
-};
-
 taskboardRouter.get('/', async (request, response) => {
-  let taskboards = await Taskboard.find({}).populate('project');
-  if (taskboards.length === 0) {
-    await Taskboard.create(initialTaskboard);
-    taskboards = await Taskboard.find({});
-  }
+  const taskboards = await Taskboard.find({}).populate('project');
   response.json(taskboards.map(Taskboard.format));
 });
 
