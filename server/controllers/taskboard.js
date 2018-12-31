@@ -7,9 +7,10 @@ const initialTaskboard = {
 };
 
 taskboardRouter.get('/', async (request, response) => {
-  const taskboards = await Taskboard.find({}).populate('project');
+  let taskboards = await Taskboard.find({}).populate('project');
   if (taskboards.length === 0) {
     await Taskboard.create(initialTaskboard);
+    taskboards = await Taskboard.find({});
   }
   response.json(taskboards.map(Taskboard.format));
 });
