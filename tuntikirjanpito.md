@@ -62,5 +62,7 @@
 | Su 16.12. |    2    | User model for backend                                     |
 | Ma 17.12. |    3    | Registration form & new project form.                      |
 | Ma 17.12. |    1    | Login form & authentication.                               |
+| Su 30.12. |    4    | Deployment and various fixes related to that               |
+| Ma 31.12. |    1    | More bugfixes                                              |
 |           |         |                                                            |
-| **Total** | **140** |                                                            |
+| **Total** | **145** |                                                            |
